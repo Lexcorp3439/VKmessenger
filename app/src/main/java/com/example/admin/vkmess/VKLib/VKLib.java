@@ -126,7 +126,7 @@ public class VKLib {
                 int i = 0;
 
                 for (Parameters elem : param) {
-                    if (Objects.equals(elem.title, "")) {
+                    if (Objects.equals(elem.title, "" ) && elem.user_id > 0) {
                         users.add(users_All.get(i));
                         images.add(image_All.get(i));
                         i++;

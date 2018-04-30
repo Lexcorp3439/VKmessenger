@@ -25,7 +25,9 @@ public class BodyMess extends AppCompatActivity
     FragmentFriends fFriends;
     public static String TOKEN;
     public static String ID;
-
+    public static String server;
+    public static String key;
+    public static int ts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,13 @@ public class BodyMess extends AppCompatActivity
 
         TOKEN = getIntent().getExtras().getString("token");
         ID = getIntent().getExtras().getString("id");
+        key = getIntent().getExtras().getString("key");
+        server = getIntent().getExtras().getString("server");
+        ts = getIntent().getExtras().getInt("ts");
+        System.out.println(server);
+        System.out.println(key);
+        System.out.println(ts);
+
         fMessage = new FragmentMessage();
         fProfile = new FragmentProfile();
         fFriends = new FragmentFriends();

@@ -22,9 +22,9 @@ public class Friends {
         json.beginObject();
         json.nextName();
         json.beginObject();
-        json.nextName();
-        System.out.println(json.nextInt());
         System.out.println(json.nextName());
+        json.skipValue();
+        json.nextName();
         json.beginArray();
         while (json.hasNext()){
             json.beginObject();
@@ -48,7 +48,6 @@ public class Friends {
                         json.skipValue();
                 }
             }
-            System.out.println(nameObj.toString());
             name.add(nameObj.toString());
             json.endObject();
         }

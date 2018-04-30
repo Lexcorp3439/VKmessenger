@@ -1,18 +1,9 @@
 package com.example.admin.vkmess;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.webkit.WebView;
 
-import com.vk.sdk.VKAccessToken;
-import com.vk.sdk.VKCallback;
-import com.vk.sdk.VKSdk;
-import com.vk.sdk.api.VKError;
-import com.vk.sdk.util.VKUtil;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 public class MainActivity extends Activity {
 
@@ -24,7 +15,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_in);
 
-        android.webkit.WebView webView = findViewById(R.id.webView);
+        WebView webView = findViewById(R.id.webView);
         webView.setWebViewClient(new AutenWeb(getApplicationContext()));
 
         webView.loadUrl(url);

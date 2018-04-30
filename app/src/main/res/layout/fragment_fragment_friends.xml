@@ -1,11 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.admin.vkmess.Fragments.FragmentFriends">
-
-    <!-- TODO: Update blank fragment layout -->
 
     <ImageButton
         android:id="@+id/showFriends"
@@ -23,10 +21,10 @@
 
     <ListView
         android:id="@+id/listFriends"
-        android:layout_width="368dp"
+        android:layout_width="371dp"
         android:layout_height="563dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>
