@@ -23,6 +23,7 @@ import com.example.admin.vkmess.ObjectParameters.HistoryParam;
 import com.example.admin.vkmess.Parser.Name;
 import com.example.admin.vkmess.Parser.UserMessage;
 import com.example.admin.vkmess.R;
+import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
 import com.example.admin.vkmess.VKLib.VKrequest;
 
@@ -33,12 +34,12 @@ import java.util.ArrayList;
 public class CustomAdapter extends BaseAdapter {
     private ArrayList<String>  messages;
     private ArrayList<String>  users;
-    private ArrayList<Bitmap> images;
+    private ArrayList<String> images;
     private ArrayList<Integer> user_id;
     private Context context;
 
     public CustomAdapter(Context context, ArrayList<String> users, ArrayList<Integer> user_id,
-                         ArrayList<String> messages,ArrayList<Bitmap> images) {
+                         ArrayList<String> messages,ArrayList<String> images) {
         this.context = context;
         this.messages = messages;
         this.users = users;
@@ -77,7 +78,7 @@ public class CustomAdapter extends BaseAdapter {
             setData.user_name.setText(users.get(position));
             setData.msg.setText(messages.get(position));
 
-            setData.image.setImageBitmap(images.get(position));
+            new DownloadImage(setData.image).execute(images.get(position));
 
             view.setOnClickListener(v -> {
                 final int id = user_id.get(position);

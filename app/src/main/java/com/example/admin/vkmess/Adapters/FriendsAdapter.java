@@ -11,23 +11,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin.vkmess.R;
+import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
 
 import java.util.ArrayList;
 
 public class FriendsAdapter extends BaseAdapter {
 
-    private ArrayList<Bitmap>  images;
+    private ArrayList<String>  image;
     private ArrayList<String>  users;
     private ArrayList<Integer> id;
     private Context context;
 
 
-    public FriendsAdapter(Context context, ArrayList<String>  users, ArrayList<Bitmap> images, ArrayList<Integer> id){
+    public FriendsAdapter(Context context, ArrayList<String>  users, ArrayList<String> image, ArrayList<Integer> id){
         this.users = users;
         this.context = context;
-        this.images = images;
+        this.image = image;
         this.id = id;
+
+
     }
 
     @Override
@@ -58,7 +61,8 @@ public class FriendsAdapter extends BaseAdapter {
         setData.image = view.findViewById(R.id.image);
 
         setData.user_name.setText(users.get(position));
-        setData.image.setImageBitmap(images.get(position));
+
+        new DownloadImage(setData.image).execute(image.get(position));
 
         view.setOnClickListener(v -> {
             final int user_id = id.get(position);

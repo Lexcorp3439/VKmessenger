@@ -1,9 +1,6 @@
 package com.example.admin.vkmess.Parser;
 
-import android.graphics.Bitmap;
 import android.util.JsonReader;
-
-import com.example.admin.vkmess.VKLib.VKrequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,10 +9,9 @@ import java.util.Objects;
 public class Name {
     public ArrayList<String> name = new ArrayList<>();
 
-    public ArrayList<Bitmap> images = new ArrayList<>();
+    public ArrayList<String> images = new ArrayList<>();
 
     public Name(JsonReader json) throws IOException {
-        ArrayList<String> image = new ArrayList<>();
         json.beginObject();
         json.nextName();
         json.beginArray();
@@ -30,7 +26,7 @@ public class Name {
                 } else if (Objects.equals(next, "last_name"))
                     nameObj.append(json.nextString());
                 else if (Objects.equals(next, "photo_50"))
-                    image.add(json.nextString());
+                    images.add(json.nextString());
                 else
                     json.skipValue();
 
@@ -41,7 +37,6 @@ public class Name {
         json.endArray();
         json.endObject();
 
-        image.add("https://vk.com/images/camera_50.png");
-        images = (VKrequest.getImageBitmap(image));
+        images.add("https://vk.com/images/camera_50.png");
     }
 }

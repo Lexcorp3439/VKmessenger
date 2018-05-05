@@ -1,9 +1,6 @@
 package com.example.admin.vkmess.Parser;
 
-import android.graphics.Bitmap;
 import android.util.JsonReader;
-
-import com.example.admin.vkmess.VKLib.VKrequest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,19 +9,32 @@ public class Friends {
 
     public ArrayList<String> name = new ArrayList<>();
 
-    public ArrayList<Bitmap> images = new ArrayList<>();
+    public ArrayList<String> image = new ArrayList<>();
 
     public ArrayList<Integer> id = new ArrayList<>();
 
     public Friends (JsonReader json) throws IOException {
-        ArrayList<String> image = new ArrayList<>();
+        json.beginObject();
+        json.nextName();
+        json.beginObject();
+        while (json.hasNext()) {
+            switch (json.nextName()) {
+                case "count":
+                    json.skipValue();
+                    break;
+                case "items":
+                    items(json);
+                    break;
+                default:
+                    json.skipValue();
+                    break;
+            }
+        }
+        json.endObject();
+        json.endObject();
+    }
 
-        json.beginObject();
-        json.nextName();
-        json.beginObject();
-        System.out.println(json.nextName());
-        json.skipValue();
-        json.nextName();
+    private void items(JsonReader json) throws IOException {
         json.beginArray();
         while (json.hasNext()){
             json.beginObject();
@@ -46,15 +56,13 @@ public class Friends {
                         break;
                     default:
                         json.skipValue();
+                        break;
                 }
             }
-            name.add(nameObj.toString());
             json.endObject();
+
+            name.add(nameObj.toString());
         }
         json.endArray();
-        json.endObject();
-        json.endObject();
-
-        images = (VKrequest.getImageBitmap(image));
     }
 }

@@ -28,6 +28,7 @@ public class BodyMess extends AppCompatActivity
     public static String server;
     public static String key;
     public static int ts;
+    public static int pts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

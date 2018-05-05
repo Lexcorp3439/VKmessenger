@@ -6,55 +6,71 @@ import com.example.admin.vkmess.ObjectParameters.Parameters;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Message {
     private boolean unread = false;
     private int user_id;
     public String title = "";
     private String body = "";
-    private JsonReader json;
     public ArrayList<Parameters> param = new ArrayList<>();
 
-    public Message(JsonReader json,int count) throws IOException {
-        this.json = json;
-
+    public Message(JsonReader json) throws IOException {
         json.beginObject();
         json.nextName();
         json.beginObject();
-        json.nextName();
-        json.skipValue();
-        if (Objects.equals(json.nextName(), "unread_dialogs")) {
-            json.skipValue();
-            json.nextName();
-        }
-        json.beginArray();
-        for (int i = 0; i < count; i++) {
-            json.beginObject();
-            if (Objects.equals(json.nextName(), "unread")){
-                json.skipValue();
-                json.nextName();
+        while (json.hasNext()) {
+            switch (json.nextName()) {
+                case "unread_dialogs":
+                    json.skipValue();
+                    break;
+                case "count":
+                    json.skipValue();
+                    break;
+                case "items":
+                    items(json);
+                    break;
+                default:
+                    json.skipValue();
+                    break;
             }
-            param.add(messageObject());
-
-            json.nextName();
-            json.skipValue();
-            json.nextName();
-            json.skipValue();
-            json.endObject();
         }
-        json.endArray();
         json.endObject();
         json.endObject();
     }
 
-    private Parameters messageObject() throws IOException {
+    private void items(JsonReader json) throws IOException {
+        json.beginArray();
+        while (json.hasNext()) {
+            json.beginObject();
+            while (json.hasNext()) {
+                switch (json.nextName()) {
+                    case "unread":
+                        json.skipValue();
+                        break;
+                    case "message":
+                        param.add(message(json));
+                        break;
+                    default:
+                        json.skipValue();
+                        break;
+                }
+            }
+            json.endObject();
+        }
+        json.endArray();
+    }
+
+    private Parameters message(JsonReader json) throws IOException {
         json.beginObject();
-        while (json.hasNext()){
-            switch (json.nextName()){
+        while (json.hasNext()) {
+            switch (json.nextName()) {
                 case "unread":
                     json.skipValue();
                     unread = true;
+                    break;
+                case "date":
+                    json.skipValue();
+                    break;
                 case "user_id":
                     user_id = json.nextInt();
                     break;
@@ -63,6 +79,17 @@ public class Message {
                     break;
                 case "body":
                     body = json.nextString();
+                    break;
+                case "action":                //chat_title_update    "chat_kick_user"
+                    String chat = json.nextString();
+                    if (chat.equals("chat_kick_user"))
+                        body = "Пользователь исключен из беседы";
+                    break;
+                case "action_text":
+                    body = json.nextString();
+                    break;
+                case "chat_id":
+                    user_id = json.nextInt();
                     break;
                 case "attachments":
                     body = attachment(json);
@@ -77,21 +104,68 @@ public class Message {
     }
 
     private String attachment(JsonReader json) throws IOException {
-        String type;
+        String type = "";
         json.beginArray();
-        json.beginObject();
-        json.nextName();
-        type = json.nextString();
-        if (Objects.equals(type, "doc"))
-            type = "Документ";
-        if (Objects.equals(type, "wall"))
-            type = "Запись со стены";
-        if (Objects.equals(type, "sticker"))
-            type = "Стикер";
-        while (json.hasNext())
-            json.skipValue();
-        json.endObject();
+        while (json.hasNext()) {
+            json.beginObject();
+            while (json.hasNext()) {
+                switch (json.nextName()) {
+                    case "type":
+                        type = json.nextString();
+                        break;
+                    case "photo":
+                        type = photo(json, type);
+                        break;
+                    case "doc":
+                        type = doc(json, type);
+                        break;
+                    default:
+                        json.skipValue();
+                        break;
+                }
+            }
+            json.endObject();
+        }
         json.endArray();
+        return type;
+    }
+
+    private String doc (JsonReader json, String type) throws IOException {
+        json.beginObject();
+        while (json.hasNext()) {
+            switch (json.nextName()) {
+                case "title":
+                    String text = json.nextString();
+                    if (!text.equals("")) {
+                        if (text.equals("voice_message.webm"))
+                            type = "Голосовое сообщение";
+                        else type = text;
+                    }
+                    break;
+                default:
+                    json.skipValue();
+                    break;
+            }
+        }
+        json.endObject();
+        return type;
+    }
+
+    private String photo (JsonReader json, String type) throws IOException {
+        json.beginObject();
+        while (json.hasNext()) {
+            switch (json.nextName()) {
+                case "text":
+                    String text = json.nextString();
+                    if (!text.equals(""))
+                        type = text;
+                    break;
+                default:
+                    json.skipValue();
+                    break;
+            }
+        }
+        json.endObject();
         return type;
     }
 }

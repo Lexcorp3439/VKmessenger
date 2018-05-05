@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,7 @@ public class FragmentMessage extends Fragment implements NavigationView.OnNaviga
 
     private ListView listView;
     private int msgCount = 20;
-    int ts = BodyMess.ts;
+    int pts = BodyMess.pts;
 
 
     @Override
@@ -55,29 +56,31 @@ public class FragmentMessage extends Fragment implements NavigationView.OnNaviga
             getDialogs(msgCount, getActivity(), listView);
         });
 
-//        VKrequest.lamda(() -> {
-//            String urlLog = "https://api.vk.com/method/messages.getLongPollServer?lp_version=3" +
-//                    "&need_pts=0&v=5.74&access_token=" + BodyMess.TOKEN;
 //
-//            try {
-//                LPElem elem = new LongPoll(Objects.requireNonNull(VKrequest.getJSON(urlLog))).elem;
-//                ts = elem.ts;
+//        new Thread(() -> {
 //
-//                while (true){
+// //           while (true)
+//                try {
+//                    String url = "https://api.vk.com/method/messages.getLongPollHistory/pts=" + pts +"v=5.74&access_token=" + BodyMess.TOKEN;
 //
-//                    String longPoll = "https://" + elem.server + "?act=a_check&key=" +
-//                            elem.key + "&ts=" + ts + "&wait=90&mode=2&version=3";
-//                    JsonReader json = VKrequest.getJSON(longPoll);
-//                    LongPollRequest request = new LongPollRequest(json);
-//                    ts = request.ts;
-//                    if (request.reload)
+//                    LongPollRequest lpr = new LongPollRequest(Objects.requireNonNull(VKrequest.getJSON(url)));
+//
+//                    pts = lpr.pts;
+//                   // Log.e("pts", String.valueOf(pts));
+//                   // Log.e("count", String.valueOf(lpr.count));
+//
+//                    System.out.println(pts);
+//                    System.out.println(lpr.count);
+//
+//                    if (lpr.count > 0) {
 //                        VKLib.getDialogs(msgCount, getActivity(), listView);
-//                }
+//                    }
 //
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            });
+//                } catch (Exception e) {
+//                    e.getStackTrace();
+//                }
+//        }).start();
+
 
         ImageButton showMessage = view.findViewById(R.id.showText);
         showMessage.setOnClickListener(v -> getDialogs(msgCount, getActivity(), listView));

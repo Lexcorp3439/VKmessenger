@@ -13,6 +13,7 @@ public class LongPoll {
     public LongPoll(JsonReader json) throws IOException {
 
         int ts = 0;
+        int pts = 0;
         String key = "";
         String server = "";
 
@@ -30,6 +31,9 @@ public class LongPoll {
                 case "server":
                     server = json.nextString();
                     break;
+                case "pts":
+                    pts = json.nextInt();
+                    break;
                 default:
                     json.skipValue();
                     break;
@@ -37,6 +41,6 @@ public class LongPoll {
         }
         json.endObject();
         json.endObject();
-        elem = new LPElem(ts, server, key);
+        elem = new LPElem(ts, server, key, pts);
     }
 }

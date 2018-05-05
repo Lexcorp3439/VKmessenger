@@ -59,25 +59,4 @@ public class VKrequest {
         }
         return null;
     }
-
-    public static ArrayList<Bitmap> getImageBitmap(ArrayList<String> URL) {
-        ArrayList<Bitmap> bm = new ArrayList<>();
-        try {
-            URL aURL;
-            for (String url : URL) {
-                aURL = new URL(url);
-                URLConnection conn = aURL.openConnection();
-                conn.connect();
-                InputStream is = conn.getInputStream();
-                BufferedInputStream bis = new BufferedInputStream(is);
-                bm.add(BitmapFactory.decodeStream(bis));
-                bis.close();
-                is.close();
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Error getting bitmap", e);
-        }
-
-        return bm;
-    }
 }

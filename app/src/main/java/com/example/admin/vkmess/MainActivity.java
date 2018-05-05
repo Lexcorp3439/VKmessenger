@@ -19,5 +19,7 @@ public class MainActivity extends Activity {
         webView.setWebViewClient(new AutenWeb(getApplicationContext()));
 
         webView.loadUrl(url);
+
+        finish();
     }
 }

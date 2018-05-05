@@ -84,6 +84,7 @@ public class UserMessage {
     private String attachments(JsonReader json) throws IOException {
         String type;
         json.beginArray();
+
         json.beginObject();
         json.nextName();
         type = json.nextString();
@@ -95,9 +96,17 @@ public class UserMessage {
             type = "Стикер";
         if (Objects.equals(type, "photo"))
             type = "Фотография";
+        if (Objects.equals(type, "audio"))
+            type = "Аудио";
+        if (Objects.equals(type, "video"))
+            type = "Видео";
         while (json.hasNext())
             json.skipValue();
         json.endObject();
+        while (json.hasNext()){
+            json.skipValue();
+        }
+
         json.endArray();
         return type;
     }

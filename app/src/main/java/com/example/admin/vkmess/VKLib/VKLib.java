@@ -26,6 +26,15 @@ import static com.example.admin.vkmess.BodyMess.ID;
 
 public class VKLib {
 
+    public static void sendMess(int id, String msg){
+        VKrequest.lamda(() -> {
+            String url = "https://api.vk.com/method/messages.send?user_id=" + id + "&message="
+                    + msg + "&v=5.74&access_token=" + TOKEN;
+
+            JsonReader json = VKrequest.getJSON(url);
+        });
+    }
+
     public static void getFriends(Context context, Activity activity, ListView listView){
         VKrequest.lamda(() -> {
             String url = "https://api.vk.com/method/friends.get?user_id=" + ID + "&order=hints&fields=photo_50&v=5.74&access_token=" + TOKEN;
@@ -34,7 +43,7 @@ public class VKLib {
             try {
                 Friends friends = new Friends(json);
                 activity.runOnUiThread(() ->
-                        listView.setAdapter(new FriendsAdapter(context, friends.name, friends.images, friends.id)));
+                        listView.setAdapter(new FriendsAdapter(context, friends.name, friends.image, friends.id)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -87,7 +96,7 @@ public class VKLib {
             ArrayList<Parameters> param;
             ArrayList<String> messages = new ArrayList<>();
             ArrayList<String> users = new ArrayList<>();
-            ArrayList<Bitmap> images = new ArrayList<>();
+            ArrayList<String> images = new ArrayList<>();
             ArrayList<Integer> users_id = new ArrayList<>();
             String request = "https://api.vk.com/method/messages.getDialogs?count=" + count + "&v=5.74&access_token=" + TOKEN;
 
@@ -97,7 +106,7 @@ public class VKLib {
                 System.out.println("LexaLOH");
 
             try {
-                param = new Message(json, count).param;
+                param = new Message(json).param;
 
                 StringBuilder allID = new StringBuilder();
 
@@ -121,8 +130,8 @@ public class VKLib {
                 json = VKrequest.getJSON(nameReq);
                 Name name = new Name(json);
                 ArrayList<String> users_All = name.name;
-                ArrayList<Bitmap> image_All = name.images;
-                Bitmap defaultImg = image_All.get(image_All.size() - 1);
+                ArrayList<String> image_All = name.images;
+                String defaultImg = image_All.get(image_All.size() - 1);
                 int i = 0;
 
                 for (Parameters elem : param) {

@@ -49,21 +49,24 @@ class AutenWeb extends WebViewClient{
 
         if (url.matches(".*access_token=.*")) {
             String urlLog = "https://api.vk.com/method/messages.getLongPollServer?lp_version=3" +
-                    "&need_pts=0&v=5.74&access_token=" + url.substring(45, 130);
+                    "&need_pts=0&need_pts=1&v=5.74&access_token=" + url.substring(45, 130);
             VKrequest.lamda(() -> {
                 try {
                     LPElem elem = new LongPoll(Objects.requireNonNull(VKrequest.getJSON(urlLog))).elem;
 
                     String ACCES_TOKEN = url.substring(45, 130);
                     String ID = url.substring(156, 165);
-                    String server = elem.server;
-                    String key = elem.key;
+//                    String server = elem.server;
+//                    String key = elem.key;
                     int ts = elem.ts;
+                    int pts = elem.pts;
+                    System.out.println(pts);
                     Intent intent = new Intent(context, BodyMess.class);
                     intent.putExtra("token", ACCES_TOKEN).putExtra("id", ID)
-                            .putExtra("server", server).putExtra("key", key)
-                            .putExtra("ts", ts);
+                           // .putExtra("server", server).putExtra("key", key)
+                            .putExtra("ts", ts).putExtra("pts", pts);
                     context.startActivity(intent);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
