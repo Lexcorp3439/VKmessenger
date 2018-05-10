@@ -18,7 +18,7 @@ public class Dialogs extends Activity {
 
     public ArrayList<String> messages;
     public ArrayList<String> users;
-    public ArrayList<Integer>  read_state;
+    public ArrayList<Integer> read_state;
     int id = 0;
 
     EditText text;
@@ -50,7 +50,7 @@ public class Dialogs extends Activity {
             if (!Objects.equals(String.valueOf(text.getText()), "")) {
                 VKLib.sendMess(id, String.valueOf(text.getText()));
                 text.setText("");
- //               VKLib.getDialogHist(id, getApplicationContext());
+                //               VKLib.getDialogHist(id, getApplicationContext());
             }
         });
     }

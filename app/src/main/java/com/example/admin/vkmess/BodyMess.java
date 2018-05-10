@@ -17,7 +17,7 @@ import com.example.admin.vkmess.Fragments.FragmentFriends;
 
 
 public class BodyMess extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener  {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     FragmentProfile fProfile;
     FragmentMessage fMessage;
@@ -104,7 +104,8 @@ public class BodyMess extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
-        } fTrans.commit();
+        }
+        fTrans.commit();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -161,8 +161,8 @@ public class Message {
         return type;
     }
 
-    private String type(String tp){
-        switch (tp){
+    private String type(String tp) {
+        switch (tp) {
             case "doc":
                 return "Документ";
             case "wall":
@@ -180,7 +180,7 @@ public class Message {
         }
     }
 
-    private String doc (JsonReader json, String type) throws IOException {
+    private String doc(JsonReader json, String type) throws IOException {
         json.beginObject();
         while (json.hasNext()) {
             switch (json.nextName()) {
@@ -201,7 +201,7 @@ public class Message {
         return type;
     }
 
-    private String photo (JsonReader json, String type) throws IOException {
+    private String photo(JsonReader json, String type) throws IOException {
         json.beginObject();
         while (json.hasNext()) {
             switch (json.nextName()) {

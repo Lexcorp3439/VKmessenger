@@ -24,8 +24,8 @@ public class LongPoll {
         json.beginObject();
         json.nextName();
         json.beginObject();
-        while (json.hasNext()){
-            switch (json.nextName()){
+        while (json.hasNext()) {
+            switch (json.nextName()) {
                 case "key":
                     key = json.nextString();
                     break;

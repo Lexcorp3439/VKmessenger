@@ -86,7 +86,7 @@ public class UserMessage {
             json.endObject();
         }
         json.endArray();
-        history =  new HistoryParam(messages, out, read_state);
+        history = new HistoryParam(messages, out, read_state);
     }
 
     private String attachments(JsonReader json) throws IOException {
@@ -129,8 +129,8 @@ public class UserMessage {
         return type;
     }
 
-    private String type(String tp){
-        switch (tp){
+    private String type(String tp) {
+        switch (tp) {
             case "doc":
                 return "Документ";
             case "wall":

@@ -25,31 +25,28 @@ import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
-class AutenWeb extends WebViewClient{
+class AutenWeb extends WebViewClient {
 
     private Context context;
 
-    AutenWeb(Context context){
+    AutenWeb(Context context) {
         this.context = context;
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean shouldOverrideUrlLoading(WebView webView, String url)
-    {
+    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
         return shouldOverrideUrlLoading(url);
     }
 
     @TargetApi(Build.VERSION_CODES.N)
     @Override
-    public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request)
-    {
+    public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
         Uri uri = request.getUrl();
         return shouldOverrideUrlLoading(uri.toString());
     }
 
-    private boolean shouldOverrideUrlLoading(final String url)
-    {
+    private boolean shouldOverrideUrlLoading(final String url) {
         Log.i(TAG, "shouldOverrideUrlLoading() URL : " + url);
 
         if (url.contains("access_token")) {

@@ -29,21 +29,22 @@ class VKrequest extends AsyncTask<String, Void, JsonReader> {
 
             connection.connect();
 
-            if (HttpURLConnection.HTTP_OK == connection.getResponseCode()){
+            if (HttpURLConnection.HTTP_OK == connection.getResponseCode()) {
 
                 return new JsonReader(new InputStreamReader(connection.getInputStream()));
-            } else{
+            } else {
                 Log.d("VKrequest", "Fail: " + connection.getResponseCode() + ", " + connection.getResponseMessage());
             }
-        } catch (Exception cause){
+        } catch (Exception cause) {
             Log.d("VKrequestTEXT", cause.getMessage());
         } finally {
-            if (connection != null){
+            if (connection != null) {
                 connection.disconnect();
             }
         }
         return null;
     }
+
     protected void onPostExecute(JsonReader json) {
 
     }

@@ -26,7 +26,7 @@ public class Friends {
         return id;
     }
 
-    public Friends (JsonReader json) throws IOException {
+    public Friends(JsonReader json) throws IOException {
         json.beginObject();
         json.nextName();
         json.beginObject();
@@ -49,11 +49,11 @@ public class Friends {
 
     private void items(JsonReader json) throws IOException {
         json.beginArray();
-        while (json.hasNext()){
+        while (json.hasNext()) {
             json.beginObject();
             StringBuilder nameObj = new StringBuilder();
             while (json.hasNext()) {
-                switch (json.nextName()){
+                switch (json.nextName()) {
                     case "id":
                         id.add(json.nextInt());
                         break;
