@@ -14,13 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.example.admin.vkmess.BodyMess;
 import com.example.admin.vkmess.ObjectParameters.LPElem;
 import com.example.admin.vkmess.Parser.LongPoll;
 import com.example.admin.vkmess.Parser.LongPollRequest;
 import com.example.admin.vkmess.R;
-import com.example.admin.vkmess.VKLib.VKLib;
-import com.example.admin.vkmess.VKLib.VKrequest;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -33,7 +30,7 @@ public class FragmentMessage extends Fragment implements NavigationView.OnNaviga
 
     private ListView listView;
     private int msgCount = 20;
-    int pts = BodyMess.pts;
+//    int pts = BodyMess.pts;
 
 
     @Override

@@ -16,22 +16,24 @@ public class UserMessage {
         json.beginObject();                                                                         // {
         json.nextName();                                                                          // response
         json.beginObject();                                                                         // {
-        json.nextName();                                                                           // count
-        json.skipValue();                                                                           // 37
-        if (Objects.equals(json.nextName(), "unread")) {
-            json.skipValue();
-            json.nextName();
+        while (json.hasNext()) {
+            switch (json.nextName()) {
+                case "count":
+                    json.skipValue();
+                    break;
+                case "items":
+                    items(json);
+                    break;
+                default:
+                    json.skipValue();
+                    break;
+            }
         }
-        history = parseObj(json);
-        json.nextName();
-        json.skipValue();
-        json.nextName();
-        json.skipValue();
         json.endObject();
         json.endObject();
     }
 
-    private HistoryParam parseObj(JsonReader json) throws IOException {
+    private void items(JsonReader json) throws IOException {
         ArrayList<String> messages = new ArrayList<>();
         ArrayList<Integer> out = new ArrayList<>();
         ArrayList<Integer> read_state = new ArrayList<>();
@@ -58,16 +60,18 @@ public class UserMessage {
                         else text.append(attachments(json));
                         break;
                     case "fwd_messages":
-                        text.append("Пересланное сообщение");
-                        json.beginArray();
-                        while (json.hasNext()) {
-                            json.beginObject();
-                            while (json.hasNext())
-                                json.skipValue();
-                            json.endObject();
-                        }
-                        json.endArray();
-
+                        text.append("\nПересланное сообщение");
+//                        json.beginArray();
+//                        while (json.hasNext()) {
+//                            json.beginObject();
+//                            while (json.hasNext()) {
+//                                json.nextName();
+//                                json.skipValue();
+//                            }
+//                            json.endObject();
+//                        }
+//                        json.endArray();
+                        json.skipValue();
                         break;
                     default:
                         json.skipValue();
@@ -78,37 +82,66 @@ public class UserMessage {
             json.endObject();
         }
         json.endArray();
-        return new HistoryParam(messages, out, read_state);
+        history =  new HistoryParam(messages, out, read_state);
     }
 
     private String attachments(JsonReader json) throws IOException {
-        String type;
+        String type = "";
         json.beginArray();
+        while (json.hasNext()) {
+            json.beginObject();
+            while (json.hasNext()) {
+                switch (json.nextName()) {
+                    case "type":
+                        type = type(json.nextString());
+                        break;
+                    case "doc":
+                        json.skipValue();
+                        break;
+                    case "photo":
+                        json.skipValue();
+                        break;
+                    case "wall":
+                        json.skipValue();
+                        break;
+                    case "sticker":
+                        json.skipValue();
+                        break;
+                    case "audio":
+                        json.skipValue();
+                        break;
+                    case "video":
+                        json.skipValue();
+                        break;
 
-        json.beginObject();
-        json.nextName();
-        type = json.nextString();
-        if (Objects.equals(type, "doc"))
-            type = "Документ";
-        if (Objects.equals(type, "wall"))
-            type = "Запись со стены";
-        if (Objects.equals(type, "sticker"))
-            type = "Стикер";
-        if (Objects.equals(type, "photo"))
-            type = "Фотография";
-        if (Objects.equals(type, "audio"))
-            type = "Аудио";
-        if (Objects.equals(type, "video"))
-            type = "Видео";
-        while (json.hasNext())
-            json.skipValue();
-        json.endObject();
-        while (json.hasNext()){
-            json.skipValue();
+                    default:
+                        json.skipValue();
+                        break;
+                }
+            }
+            json.endObject();
         }
-
         json.endArray();
         return type;
+    }
+
+    private String type(String tp){
+        switch (tp){
+            case "doc":
+                return "Документ";
+            case "wall":
+                return "Запись со стены";
+            case "sticker":
+                return "Стикер";
+            case "photo":
+                return "Фотография";
+            case "audio":
+                return "Аудио";
+            case "video":
+                return "Видео";
+            default:
+                return tp;
+        }
     }
 }
 

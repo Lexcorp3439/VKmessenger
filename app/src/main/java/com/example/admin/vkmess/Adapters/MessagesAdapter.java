@@ -11,15 +11,16 @@ import android.widget.TextView;
 import com.example.admin.vkmess.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MessagesAdapter extends BaseAdapter{
-    private ArrayList<String>  messages;
-    private ArrayList<String>  users;
-    private ArrayList<Integer>  read_state;
+    private List<String> messages;
+    private List<String>  users;
+    private List<Integer>  read_state;
     private Context context;
 
-    public MessagesAdapter(Context context, ArrayList<String> messages,
-                           ArrayList<String> users, ArrayList<Integer>   read_state){
+    public MessagesAdapter(Context context, List<String> messages,
+                           List<String> users, List<Integer>   read_state){
         this.users = users;
         this.messages = messages;
         this.context = context;
@@ -45,8 +46,6 @@ public class MessagesAdapter extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent) {
         SetData setData = new SetData();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        System.out.println(messages.get(0));
 
         assert inflater != null;
         @SuppressLint({"ViewHolder", "InflateParams"}) View view = inflater.inflate(R.layout.user_mess, null);

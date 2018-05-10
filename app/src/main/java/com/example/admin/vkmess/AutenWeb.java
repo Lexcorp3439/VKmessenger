@@ -13,16 +13,21 @@ import android.webkit.WebViewClient;
 
 import com.example.admin.vkmess.ObjectParameters.LPElem;
 import com.example.admin.vkmess.Parser.LongPoll;
-import com.example.admin.vkmess.VKLib.VKrequest;
+import com.example.admin.vkmess.VKLib.VKLib;
+
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
 class AutenWeb extends WebViewClient{
 
-    Context context;
+    private Context context;
 
     AutenWeb(Context context){
         this.context = context;
@@ -47,30 +52,29 @@ class AutenWeb extends WebViewClient{
     {
         Log.i(TAG, "shouldOverrideUrlLoading() URL : " + url);
 
-        if (url.matches(".*access_token=.*")) {
-            String urlLog = "https://api.vk.com/method/messages.getLongPollServer?lp_version=3" +
-                    "&need_pts=0&need_pts=1&v=5.74&access_token=" + url.substring(45, 130);
-            VKrequest.lamda(() -> {
-                try {
-                    LPElem elem = new LongPoll(Objects.requireNonNull(VKrequest.getJSON(urlLog))).elem;
+        if (url.contains("access_token")) {
+//            String urlLog = "https://api.vk.com/method/messages.getLongPollServer?lp_version=3" +
+//                    "&need_pts=0&need_pts=1&v=5.74&access_token=" + url.substring(45, 130);
 
-                    String ACCES_TOKEN = url.substring(45, 130);
-                    String ID = url.substring(156, 165);
+            Uri uri = Uri.parse(url);
+            String[] kek = uri.getEncodedFragment().split("&");
+
+            String ACCES_TOKEN = kek[0].split("=")[1];
+            String ID = kek[2].split("=")[1];
 //                    String server = elem.server;
 //                    String key = elem.key;
-                    int ts = elem.ts;
-                    int pts = elem.pts;
-                    System.out.println(pts);
-                    Intent intent = new Intent(context, BodyMess.class);
-                    intent.putExtra("token", ACCES_TOKEN).putExtra("id", ID)
-                           // .putExtra("server", server).putExtra("key", key)
-                            .putExtra("ts", ts).putExtra("pts", pts);
-                    context.startActivity(intent);
+//                    int ts = elem.ts;
+//                    int pts = elem.pts;
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+            VKLib vkLib = new VKLib();
+            vkLib.setTOKEN(ACCES_TOKEN);
+            vkLib.setID(ID);
+
+            Intent intent = new Intent(context, BodyMess.class);
+
+            // .putExtra("server", server).putExtra("key", key)
+//                            .putExtra("ts", ts).putExtra("pts", pts);
+            context.startActivity(intent);
 
         }
 

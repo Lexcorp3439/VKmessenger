@@ -1,15 +1,8 @@
 package com.example.admin.vkmess.Adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Icon;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Parcelable;
-import android.util.JsonReader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,29 +10,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.admin.vkmess.BodyMess;
-import com.example.admin.vkmess.Dialogs;
-import com.example.admin.vkmess.ObjectParameters.HistoryParam;
-import com.example.admin.vkmess.Parser.Name;
-import com.example.admin.vkmess.Parser.UserMessage;
 import com.example.admin.vkmess.R;
 import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
-import com.example.admin.vkmess.VKLib.VKrequest;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class CustomAdapter extends BaseAdapter {
-    private ArrayList<String>  messages;
-    private ArrayList<String>  users;
-    private ArrayList<String> images;
-    private ArrayList<Integer> user_id;
+    private List<String> messages;
+    private List<String>  users;
+    private List<String> images;
+    private List<Integer> user_id;
     private Context context;
 
-    public CustomAdapter(Context context, ArrayList<String> users, ArrayList<Integer> user_id,
-                         ArrayList<String> messages,ArrayList<String> images) {
+    private String LOG = "CustomAdapter: ";
+
+    public CustomAdapter(Context context, List<String> users, List<Integer> user_id,
+                         List<String> messages,List<String> images) {
         this.context = context;
         this.messages = messages;
         this.users = users;
@@ -82,7 +70,7 @@ public class CustomAdapter extends BaseAdapter {
 
             view.setOnClickListener(v -> {
                 final int id = user_id.get(position);
-                System.out.println(id);
+                Log.e(LOG, "user_id= " + id);
                 VKLib.getDialogHist(id, context);
             });
 

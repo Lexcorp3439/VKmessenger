@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.admin.vkmess.Fragments.FragmentMessage;
 import com.example.admin.vkmess.Fragments.FragmentProfile;
@@ -23,12 +22,11 @@ public class BodyMess extends AppCompatActivity
     FragmentProfile fProfile;
     FragmentMessage fMessage;
     FragmentFriends fFriends;
-    public static String TOKEN;
-    public static String ID;
-    public static String server;
-    public static String key;
-    public static int ts;
-    public static int pts;
+//
+//    public static String server;
+//    public static String key;
+//    public static int ts;
+//    public static int pts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +48,9 @@ public class BodyMess extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TOKEN = getIntent().getExtras().getString("token");
-        ID = getIntent().getExtras().getString("id");
-        key = getIntent().getExtras().getString("key");
-        server = getIntent().getExtras().getString("server");
-        ts = getIntent().getExtras().getInt("ts");
-        System.out.println(server);
-        System.out.println(key);
-        System.out.println(ts);
+//        key = getIntent().getExtras().getString("key");
+//        server = getIntent().getExtras().getString("server");
+//        ts = getIntent().getExtras().getInt("ts");
 
         fMessage = new FragmentMessage();
         fProfile = new FragmentProfile();

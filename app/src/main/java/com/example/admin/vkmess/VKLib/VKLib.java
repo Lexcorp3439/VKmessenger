@@ -3,8 +3,8 @@ package com.example.admin.vkmess.VKLib;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.util.JsonReader;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.example.admin.vkmess.Adapters.CustomAdapter;
@@ -18,94 +18,107 @@ import com.example.admin.vkmess.Parser.Name;
 import com.example.admin.vkmess.Parser.UserMessage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
 
-import static com.example.admin.vkmess.BodyMess.TOKEN;
-import static com.example.admin.vkmess.BodyMess.ID;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 public class VKLib {
 
+    private static String LOG = "VKLin: ";
+
+    private static String TOKEN;
+    private static String ID;
+
+    public void setTOKEN(String TOKEN) {
+        VKLib.TOKEN = TOKEN;
+    }
+
+    public void setID(String ID) {
+        VKLib.ID = ID;
+    }
+
     public static void sendMess(int id, String msg){
-        VKrequest.lamda(() -> {
+        try {
             String url = "https://api.vk.com/method/messages.send?user_id=" + id + "&message="
                     + msg + "&v=5.74&access_token=" + TOKEN;
 
-            JsonReader json = VKrequest.getJSON(url);
-        });
+            new VKrequest().execute(url).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void getFriends(Context context, Activity activity, ListView listView){
-        VKrequest.lamda(() -> {
             String url = "https://api.vk.com/method/friends.get?user_id=" + ID + "&order=hints&fields=photo_50&v=5.74&access_token=" + TOKEN;
 
-            JsonReader json = VKrequest.getJSON(url);
             try {
+            JsonReader json = new VKrequest().execute(url).get();
+
                 Friends friends = new Friends(json);
                 activity.runOnUiThread(() ->
                         listView.setAdapter(new FriendsAdapter(context, friends.name, friends.image, friends.id)));
-            } catch (IOException e) {
+            }  catch (IOException | ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-        });
     }
 
     public static void getDialogHist(int id, Context context) {
-        VKrequest.lamda(() -> {
-            ArrayList<String> name = new ArrayList<>();
+        ArrayList<String> name = new ArrayList<>();
 
-            String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=20&v=5.74&access_token=" + TOKEN;
-            String user_name = "https://api.vk.com/method/users.get?user_id=" + ID + "&v=5.74";
-            String friend_name = "https://api.vk.com/method/users.get?user_id=" + id + "&v=5.74";
+        String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=30&v=5.74&access_token=" + TOKEN;
+        String user_name = "https://api.vk.com/method/users.get?&v=5.74&access_token=" + TOKEN;
+        String friend_name = "https://api.vk.com/method/users.get?user_ids=" + id + "&v=5.74&access_token=" + TOKEN;
 
-            JsonReader json = VKrequest.getJSON(url);
+        try {
+        JsonReader json = new VKrequest().execute(url).get();
 
-            JsonReader userJson = VKrequest.getJSON(user_name);
-            JsonReader friendJson = VKrequest.getJSON(friend_name);
+        JsonReader userJson = new VKrequest().execute(user_name).get();
+        JsonReader friendJson = new VKrequest().execute(friend_name).get();
 
-            try {
 
-                HistoryParam history = new UserMessage(json).history;
 
-                user_name = new Name(userJson).name.get(0);
-                friend_name = new Name(friendJson).name.get(0);
+            HistoryParam history = new UserMessage(json).history;
 
-                for (int i : history.out) {
-                    if (i == 1)
-                        name.add(user_name);
-                    else
-                        name.add(friend_name);
-                }
+            user_name = new Name(userJson).name.get(0);
+            friend_name = new Name(friendJson).name.get(0);
 
-                context.startActivity(
-                        new Intent(context, Dialogs.class).putExtra("id", id)
-                                .putExtra("messages", history.messages)
-                                .putExtra("out", name)
-                                .putExtra("read_state", history.read_state));
-
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (int i : history.out) {
+                if (i == 1)
+                    name.add(user_name);
+                else
+                    name.add(friend_name);
             }
-        });
+
+            context.startActivity(
+                    new Intent(context, Dialogs.class).putExtra("id", id)
+                            .putExtra("messages", history.messages)
+                            .putExtra("out", name)
+                            .putExtra("read_state", history.read_state));
+
+        } catch (IOException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 
     public static void getDialogs(int count, Activity activity, ListView listView) {
 
-        VKrequest.lamda(() -> {
-            ArrayList<Parameters> param;
-            ArrayList<String> messages = new ArrayList<>();
-            ArrayList<String> users = new ArrayList<>();
-            ArrayList<String> images = new ArrayList<>();
-            ArrayList<Integer> users_id = new ArrayList<>();
+
+            List<Parameters> param;
+            List<String> messages = new ArrayList<>();
+            List<String> users = new ArrayList<>();
+            List<String> images = new ArrayList<>();
+            List<Integer> users_id = new ArrayList<>();
             String request = "https://api.vk.com/method/messages.getDialogs?count=" + count + "&v=5.74&access_token=" + TOKEN;
 
-            JsonReader json = VKrequest.getJSON(request);
+            try {
+            JsonReader json =  new VKrequest().execute(request).get();
 
             if (json == null)
-                System.out.println("LexaLOH");
+                Log.e(LOG, "json == null");
 
-            try {
                 param = new Message(json).param;
 
                 StringBuilder allID = new StringBuilder();
@@ -127,10 +140,11 @@ public class VKLib {
 
                 String nameReq = "https://api.vk.com/method/users.get?user_ids=" +
                         allID.toString().substring(0, allID.length() - 2) + "&fields=photo_50&v=5.74&access_token=" + TOKEN;
-                json = VKrequest.getJSON(nameReq);
+                json = new VKrequest().execute(nameReq).get();
+
                 Name name = new Name(json);
-                ArrayList<String> users_All = name.name;
-                ArrayList<String> image_All = name.images;
+                List<String> users_All = name.name;
+                List<String> image_All = name.images;
                 String defaultImg = image_All.get(image_All.size() - 1);
                 int i = 0;
 
@@ -152,11 +166,9 @@ public class VKLib {
                                 users, users_id, messages, images
                         )));
 
-            } catch (IOException e) {
+            } catch (IOException | ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-
-        });
 
 
     }

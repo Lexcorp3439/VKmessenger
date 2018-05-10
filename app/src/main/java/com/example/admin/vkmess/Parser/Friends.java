@@ -4,14 +4,15 @@ import android.util.JsonReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Friends {
 
-    public ArrayList<String> name = new ArrayList<>();
+    public List<String> name = new ArrayList<>();
 
-    public ArrayList<String> image = new ArrayList<>();
+    public List<String> image = new ArrayList<>();
 
-    public ArrayList<Integer> id = new ArrayList<>();
+    public List<Integer> id = new ArrayList<>();
 
     public Friends (JsonReader json) throws IOException {
         json.beginObject();

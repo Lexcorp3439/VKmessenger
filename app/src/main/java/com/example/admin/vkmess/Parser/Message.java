@@ -6,13 +6,14 @@ import com.example.admin.vkmess.ObjectParameters.Parameters;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Message {
     private boolean unread = false;
     private int user_id;
     public String title = "";
     private String body = "";
-    public ArrayList<Parameters> param = new ArrayList<>();
+    public List<Parameters> param = new ArrayList<>();
 
     public Message(JsonReader json) throws IOException {
         json.beginObject();
@@ -94,6 +95,18 @@ public class Message {
                 case "attachments":
                     body = attachment(json);
                     break;
+                case "fwd_messages":
+                    body = "Пересланное сообщение";
+//                        json.beginArray();
+//                        while (json.hasNext()) {
+//                            json.beginObject();
+//                            while (json.hasNext())
+//                                json.skipValue();
+//                            json.endObject();
+//                        }
+//                        json.endArray();
+                    json.skipValue();
+                    break;
                 default:
                     json.skipValue();
                     break;
@@ -111,7 +124,7 @@ public class Message {
             while (json.hasNext()) {
                 switch (json.nextName()) {
                     case "type":
-                        type = json.nextString();
+                        type = type(json.nextString());
                         break;
                     case "photo":
                         type = photo(json, type);
@@ -119,6 +132,19 @@ public class Message {
                     case "doc":
                         type = doc(json, type);
                         break;
+                    case "wall":
+                        json.skipValue();
+                        break;
+                    case "sticker":
+                        json.skipValue();
+                        break;
+                    case "audio":
+                        json.skipValue();
+                        break;
+                    case "video":
+                        json.skipValue();
+                        break;
+
                     default:
                         json.skipValue();
                         break;
@@ -128,6 +154,25 @@ public class Message {
         }
         json.endArray();
         return type;
+    }
+
+    private String type(String tp){
+        switch (tp){
+            case "doc":
+                return "Документ";
+            case "wall":
+                return "Запись со стены";
+            case "sticker":
+                return "Стикер";
+            case "photo":
+                return "Фотография";
+            case "audio":
+                return "Аудио";
+            case "video":
+                return "Видео";
+            default:
+                return tp;
+        }
     }
 
     private String doc (JsonReader json, String type) throws IOException {

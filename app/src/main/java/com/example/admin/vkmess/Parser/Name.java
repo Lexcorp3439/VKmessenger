@@ -4,12 +4,13 @@ import android.util.JsonReader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Name {
-    public ArrayList<String> name = new ArrayList<>();
+    public List<String> name = new ArrayList<>();
 
-    public ArrayList<String> images = new ArrayList<>();
+    public List<String> images = new ArrayList<>();
 
     public Name(JsonReader json) throws IOException {
         json.beginObject();

@@ -1,5 +1,6 @@
 package com.example.admin.vkmess.VKLib;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,7 +10,9 @@ import android.widget.ImageView;
 import java.io.InputStream;
 
 public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-    ImageView bmImage;
+
+    @SuppressLint("StaticFieldLeak")
+    private ImageView bmImage;
 
     public DownloadImage(ImageView bmImage) {
         this.bmImage = bmImage;

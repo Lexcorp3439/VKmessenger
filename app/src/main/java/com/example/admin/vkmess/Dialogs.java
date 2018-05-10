@@ -20,7 +20,6 @@ public class Dialogs extends Activity {
     public ArrayList<String> users;
     public ArrayList<Integer>  read_state;
     int id = 0;
-    String TOKEN;
 
     EditText text;
     ImageButton send;
@@ -39,7 +38,6 @@ public class Dialogs extends Activity {
         Collections.reverse(read_state);
 
         id = getIntent().getIntExtra("id", 0);
-        TOKEN = BodyMess.TOKEN;
 
         send = findViewById(R.id.sendMess);
         text = findViewById(R.id.takeMess);

@@ -15,16 +15,17 @@ import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FriendsAdapter extends BaseAdapter {
 
-    private ArrayList<String>  image;
-    private ArrayList<String>  users;
-    private ArrayList<Integer> id;
+    private List<String>  image;
+    private List<String> users;
+    private List<Integer> id;
     private Context context;
 
 
-    public FriendsAdapter(Context context, ArrayList<String>  users, ArrayList<String> image, ArrayList<Integer> id){
+    public FriendsAdapter(Context context, List<String>  users, List<String> image, List<Integer> id){
         this.users = users;
         this.context = context;
         this.image = image;
