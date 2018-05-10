@@ -19,7 +19,7 @@ import java.util.List;
 
 public class CustomAdapter extends BaseAdapter {
     private List<String> messages;
-    private List<String>  users;
+    private List<String> users;
     private List<String> images;
     private List<Integer> user_id;
     private Context context;
@@ -27,7 +27,7 @@ public class CustomAdapter extends BaseAdapter {
     private String LOG = "CustomAdapter: ";
 
     public CustomAdapter(Context context, List<String> users, List<Integer> user_id,
-                         List<String> messages,List<String> images) {
+                         List<String> messages, List<String> images) {
         this.context = context;
         this.messages = messages;
         this.users = users;
@@ -57,22 +57,22 @@ public class CustomAdapter extends BaseAdapter {
 
         assert inflater != null;
         @SuppressLint({"ViewHolder", "InflateParams"})
-            View view = inflater.inflate(R.layout.item, null);
+        View view = inflater.inflate(R.layout.item, null);
 
-            setData.user_name = view.findViewById(R.id.user);
-            setData.msg = view.findViewById(R.id.msg);
-            setData.image = view.findViewById(R.id.imageView2);
+        setData.user_name = view.findViewById(R.id.user);
+        setData.msg = view.findViewById(R.id.msg);
+        setData.image = view.findViewById(R.id.imageView2);
 
-            setData.user_name.setText(users.get(position));
-            setData.msg.setText(messages.get(position));
+        setData.user_name.setText(users.get(position));
+        setData.msg.setText(messages.get(position));
 
-            new DownloadImage(setData.image).execute(images.get(position));
+        new DownloadImage(setData.image).execute(images.get(position));
 
-            view.setOnClickListener(v -> {
-                final int id = user_id.get(position);
-                Log.e(LOG, "user_id= " + id);
-                VKLib.getDialogHist(id, context);
-            });
+        view.setOnClickListener(v -> {
+            final int id = user_id.get(position);
+            Log.e(LOG, "user_id= " + id);
+            VKLib.getDialogHist(id, context);
+        });
 
         return view;
     }

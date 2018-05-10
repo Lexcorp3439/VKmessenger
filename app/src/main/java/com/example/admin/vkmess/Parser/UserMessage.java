@@ -10,12 +10,16 @@ import java.util.Objects;
 
 public class UserMessage {
 
-    public HistoryParam history;
+    private HistoryParam history;
+
+    public HistoryParam getHistory() {
+        return history;
+    }
 
     public UserMessage(JsonReader json) throws IOException {
-        json.beginObject();                                                                         // {
-        json.nextName();                                                                          // response
-        json.beginObject();                                                                         // {
+        json.beginObject();
+        json.nextName();
+        json.beginObject();
         while (json.hasNext()) {
             switch (json.nextName()) {
                 case "count":

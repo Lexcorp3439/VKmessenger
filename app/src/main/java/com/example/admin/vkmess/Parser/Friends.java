@@ -8,11 +8,23 @@ import java.util.List;
 
 public class Friends {
 
-    public List<String> name = new ArrayList<>();
+    private List<String> name = new ArrayList<>();
 
-    public List<String> image = new ArrayList<>();
+    private List<String> image = new ArrayList<>();
 
-    public List<Integer> id = new ArrayList<>();
+    private List<Integer> id = new ArrayList<>();
+
+    public List<String> getName() {
+        return name;
+    }
+
+    public List<String> getImage() {
+        return image;
+    }
+
+    public List<Integer> getId() {
+        return id;
+    }
 
     public Friends (JsonReader json) throws IOException {
         json.beginObject();

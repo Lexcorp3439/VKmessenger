@@ -26,7 +26,7 @@ import static com.example.admin.vkmess.VKLib.VKLib.getDialogs;
 
 
 @SuppressLint("ValidFragment")
-public class FragmentMessage extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
+public class FragmentMessage extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListView listView;
     private int msgCount = 20;
@@ -43,7 +43,6 @@ public class FragmentMessage extends Fragment implements NavigationView.OnNaviga
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragment_message, container, false);
         listView = view.findViewById(R.id.listView);
-
 
 
         getDialogs(msgCount, getActivity(), listView);

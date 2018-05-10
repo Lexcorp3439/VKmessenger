@@ -19,13 +19,13 @@ import java.util.List;
 
 public class FriendsAdapter extends BaseAdapter {
 
-    private List<String>  image;
+    private List<String> image;
     private List<String> users;
     private List<Integer> id;
     private Context context;
 
 
-    public FriendsAdapter(Context context, List<String>  users, List<String> image, List<Integer> id){
+    public FriendsAdapter(Context context, List<String> users, List<String> image, List<Integer> id) {
         this.users = users;
         this.context = context;
         this.image = image;
@@ -50,7 +50,7 @@ public class FriendsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
         SetData setData = new SetData();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

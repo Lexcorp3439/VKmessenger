@@ -6,8 +6,16 @@ import java.io.IOException;
 
 public class LongPollRequest {
 
-    public int pts;
-    public int count;
+    private int pts;
+    private int count;
+
+    public int getPts() {
+        return pts;
+    }
+
+    public int getCount() {
+        return count;
+    }
 
     public LongPollRequest(JsonReader json) throws IOException {
         json.beginObject();

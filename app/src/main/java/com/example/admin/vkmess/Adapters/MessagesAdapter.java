@@ -13,14 +13,14 @@ import com.example.admin.vkmess.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessagesAdapter extends BaseAdapter{
+public class MessagesAdapter extends BaseAdapter {
     private List<String> messages;
-    private List<String>  users;
-    private List<Integer>  read_state;
+    private List<String> users;
+    private List<Integer> read_state;
     private Context context;
 
     public MessagesAdapter(Context context, List<String> messages,
-                           List<String> users, List<Integer>   read_state){
+                           List<String> users, List<Integer> read_state) {
         this.users = users;
         this.messages = messages;
         this.context = context;

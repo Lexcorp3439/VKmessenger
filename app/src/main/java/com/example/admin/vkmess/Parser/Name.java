@@ -8,9 +8,18 @@ import java.util.List;
 import java.util.Objects;
 
 public class Name {
-    public List<String> name = new ArrayList<>();
 
-    public List<String> images = new ArrayList<>();
+    private List<String> name = new ArrayList<>();
+
+    private List<String> images = new ArrayList<>();
+
+    public List<String> getName() {
+        return name;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
 
     public Name(JsonReader json) throws IOException {
         json.beginObject();

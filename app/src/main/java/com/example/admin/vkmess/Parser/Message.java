@@ -9,11 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Message {
+    private List<Parameters> param = new ArrayList<>();
+
+    public List<Parameters> getParam() {
+        return param;
+    }
+
     private boolean unread = false;
     private int user_id;
-    public String title = "";
+    private String title = "";
     private String body = "";
-    public List<Parameters> param = new ArrayList<>();
 
     public Message(JsonReader json) throws IOException {
         json.beginObject();

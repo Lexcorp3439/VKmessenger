@@ -8,7 +8,11 @@ import java.io.IOException;
 
 public class LongPoll {
 
-    public LPElem elem;
+    private LPElem elem;
+
+    public LPElem getElem() {
+        return elem;
+    }
 
     public LongPoll(JsonReader json) throws IOException {
 
