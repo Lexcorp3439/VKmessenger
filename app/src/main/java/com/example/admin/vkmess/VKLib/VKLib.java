@@ -40,6 +40,7 @@ public class VKLib {
     }
 
     public static void sendMess(int id, String msg) {
+
         try {
             String url = "https://api.vk.com/method/messages.send?user_id=" + id + "&message="
                     + msg + "&v=5.74&access_token=" + TOKEN;
@@ -51,6 +52,7 @@ public class VKLib {
     }
 
     public static void getFriends(Context context, Activity activity, ListView listView) {
+
         String url = "https://api.vk.com/method/friends.get?user_id=" + ID + "&order=hints&fields=photo_50&v=5.74&access_token=" + TOKEN;
 
         try {
@@ -66,6 +68,7 @@ public class VKLib {
     }
 
     public static void getDialogHist(int id, Context context) {
+
         ArrayList<String> name = new ArrayList<>();
 
         String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=30&v=5.74&access_token=" + TOKEN;
@@ -104,7 +107,6 @@ public class VKLib {
 
 
     public static void getDialogs(int count, Activity activity, ListView listView) {
-
 
         List<Parameters> param;
         List<String> messages = new ArrayList<>();
@@ -170,7 +172,6 @@ public class VKLib {
         } catch (IOException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
-
 
     }
 }

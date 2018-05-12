@@ -16,10 +16,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_login_in);
 
         WebView webView = findViewById(R.id.webView);
-        webView.setWebViewClient(new AutenWeb(getApplicationContext()));
+        webView.setWebViewClient(new AutenWeb(getApplicationContext(), webView));
 
         webView.loadUrl(url);
 
-        finish();
     }
 }

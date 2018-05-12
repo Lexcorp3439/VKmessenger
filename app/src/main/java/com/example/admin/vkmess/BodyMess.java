@@ -22,11 +22,6 @@ public class BodyMess extends AppCompatActivity
     FragmentProfile fProfile;
     FragmentMessage fMessage;
     FragmentFriends fFriends;
-//
-//    public static String server;
-//    public static String key;
-//    public static int ts;
-//    public static int pts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +42,6 @@ public class BodyMess extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-//        key = getIntent().getExtras().getString("key");
-//        server = getIntent().getExtras().getString("server");
-//        ts = getIntent().getExtras().getInt("ts");
 
         fMessage = new FragmentMessage();
         fProfile = new FragmentProfile();

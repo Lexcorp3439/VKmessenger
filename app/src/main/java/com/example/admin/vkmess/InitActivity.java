@@ -15,5 +15,7 @@ public class InitActivity extends AppCompatActivity {
     private void proceed() {
         Intent i = new Intent(InitActivity.this, MainActivity.class);
         startActivity(i);
+
+        finish();
     }
 }
