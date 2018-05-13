@@ -5,7 +5,6 @@ import android.util.JsonReader;
 import java.io.IOException;
 
 public class LongPollRequest implements Parser{
-
     private int pts;
     private int count;
 

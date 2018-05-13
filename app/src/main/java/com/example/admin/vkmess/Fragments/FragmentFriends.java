@@ -17,7 +17,6 @@ import com.example.admin.vkmess.VKLib.VKLib;
 public class FragmentFriends extends Fragment implements NavigationView.OnNavigationItemSelectedListener {
     private ListView listView;
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
@@ -36,11 +35,10 @@ public class FragmentFriends extends Fragment implements NavigationView.OnNaviga
         listView = view.findViewById(R.id.listFriends);
 
         VKLib.getFriends(getContext(), getActivity(), listView);
-
         ImageButton update = view.findViewById(R.id.showFriends);
-        update.setOnClickListener(v -> {
-            VKLib.getFriends(getContext(), getActivity(), listView);
-        });
+
+        update.setOnClickListener(v ->
+                VKLib.getFriends(getContext(), getActivity(), listView));
         return view;
     }
 }

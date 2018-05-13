@@ -4,18 +4,18 @@ import com.example.admin.vkmess.Parser.Parser;
 
 public class RequestObject {
     private String url;
-    private Parser clasS;
+    private Parser parserClass;
 
-    public RequestObject(String url, Parser clasS) {
+    RequestObject(String url, Parser parserClass) {
         this.url = url;
-        this.clasS = clasS;
+        this.parserClass = parserClass;
     }
 
     public String getUrl() {
         return url;
     }
 
-    public Parser getClasS() {
-        return clasS;
+    public Parser getParserClass() {
+        return parserClass;
     }
 }

@@ -18,7 +18,6 @@ import com.example.admin.vkmess.Fragments.FragmentFriends;
 
 public class BodyMess extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     FragmentProfile fProfile;
     FragmentMessage fMessage;
     FragmentFriends fFriends;

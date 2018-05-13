@@ -9,20 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Message implements Parser{
-
     private List<Parameters> param = new ArrayList<>();
 
     public List<Parameters> getParam() {
         return param;
     }
-
-    public Message() {
-    }
-
-    private boolean unread = false;
-    private int user_id;
-    private String title = "";
-    private String body = "";
 
     @Override
     public void parse(JsonReader json) throws IOException {
@@ -72,6 +63,11 @@ public class Message implements Parser{
     }
 
     private Parameters message(JsonReader json) throws IOException {
+        boolean unread = false;
+        int userId = 0;
+        String title = "";
+        String body = "";
+
         json.beginObject();
         while (json.hasNext()) {
             switch (json.nextName()) {
@@ -83,7 +79,7 @@ public class Message implements Parser{
                     json.skipValue();
                     break;
                 case "user_id":
-                    user_id = json.nextInt();
+                    userId = json.nextInt();
                     break;
                 case "title":
                     title = json.nextString();
@@ -100,21 +96,13 @@ public class Message implements Parser{
                     body = json.nextString();
                     break;
                 case "chat_id":
-                    user_id = json.nextInt();
+                    userId = json.nextInt();
                     break;
                 case "attachments":
                     body = attachment(json);
                     break;
                 case "fwd_messages":
                     body = "Пересланное сообщение";
-//                        json.beginArray();
-//                        while (json.hasNext()) {
-//                            json.beginObject();
-//                            while (json.hasNext())
-//                                json.skipValue();
-//                            json.endObject();
-//                        }
-//                        json.endArray();
                     json.skipValue();
                     break;
                 default:
@@ -123,7 +111,7 @@ public class Message implements Parser{
             }
         }
         json.endObject();
-        return new Parameters(body, user_id, title, unread);
+        return new Parameters(body, userId, title, unread);
     }
 
     private String attachment(JsonReader json) throws IOException {

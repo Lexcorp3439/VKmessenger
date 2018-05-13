@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserMessage implements Parser{
-
     private HistoryParam history;
 
     public HistoryParam getHistory() {
@@ -40,7 +39,7 @@ public class UserMessage implements Parser{
     private void items(JsonReader json) throws IOException {
         ArrayList<String> messages = new ArrayList<>();
         ArrayList<Integer> out = new ArrayList<>();
-        ArrayList<Integer> read_state = new ArrayList<>();
+        ArrayList<Integer> readState = new ArrayList<>();
 
 
         json.beginArray();
@@ -53,7 +52,7 @@ public class UserMessage implements Parser{
                         text.append(json.nextString());
                         break;
                     case "read_state":
-                        read_state.add(json.nextInt());
+                        readState.add(json.nextInt());
                         break;
                     case "out":
                         out.add(json.nextInt());
@@ -65,16 +64,6 @@ public class UserMessage implements Parser{
                         break;
                     case "fwd_messages":
                         text.append("\nПересланное сообщение");
-//                        json.beginArray();
-//                        while (json.hasNext()) {
-//                            json.beginObject();
-//                            while (json.hasNext()) {
-//                                json.nextName();
-//                                json.skipValue();
-//                            }
-//                            json.endObject();
-//                        }
-//                        json.endArray();
                         json.skipValue();
                         break;
                     default:
@@ -86,7 +75,7 @@ public class UserMessage implements Parser{
             json.endObject();
         }
         json.endArray();
-        history = new HistoryParam(messages, out, read_state);
+        history = new HistoryParam(messages, out, readState);
     }
 
     private String attachments(JsonReader json) throws IOException {

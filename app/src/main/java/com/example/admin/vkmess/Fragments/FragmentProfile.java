@@ -9,8 +9,6 @@ import com.example.admin.vkmess.R;
 
 
 public class FragmentProfile extends Fragment implements NavigationView.OnNavigationItemSelectedListener{
-
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;

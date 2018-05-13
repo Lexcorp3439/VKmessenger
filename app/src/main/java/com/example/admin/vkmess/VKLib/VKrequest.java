@@ -13,18 +13,13 @@ import java.net.URL;
 
 class VKrequest extends AsyncTask<RequestObject, Void, Void> {
 
-//    private Runnable run;
-    public VKrequest() {
-//        this.run = run;
-    }
-
     @Override
     protected Void doInBackground(RequestObject... request) {
         HttpURLConnection connection = null;
         RequestObject rq = request[0];
 
         // этот циел нужен для того, чтоб в том случае, если ловится ошибка timeout
-        // - программа не закрывается, а совершает повторное подклюяение
+        // - программа не закрывается, а совершает повторное подключение
         while (true) {
             try {
                 connection = (HttpURLConnection) new URL(rq.getUrl()).openConnection();
@@ -33,10 +28,9 @@ class VKrequest extends AsyncTask<RequestObject, Void, Void> {
                 connection.setUseCaches(false);
                 connection.setConnectTimeout(250);
                 connection.setReadTimeout(250);
-
                 connection.connect();
 
-                Parser clasS = rq.getClasS();
+                Parser clasS = rq.getParserClass();
 
                 if (HttpURLConnection.HTTP_OK == connection.getResponseCode()) {
                     clasS.parse(new JsonReader(new InputStreamReader(connection.getInputStream())));
@@ -57,7 +51,5 @@ class VKrequest extends AsyncTask<RequestObject, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
-
     }
-
 }

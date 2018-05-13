@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class HistoryParam {
     private ArrayList<String> messages;
     private ArrayList<Integer> out;
-    private ArrayList<Integer> read_state;
+    private ArrayList<Integer> readState;
 
     public HistoryParam(ArrayList<String> messages,
-                        ArrayList<Integer> out, ArrayList<Integer> read_state) {
+                        ArrayList<Integer> out, ArrayList<Integer> readState) {
         this.messages = messages;
         this.out = out;
-        this.read_state = read_state;
+        this.readState = readState;
     }
 
     public ArrayList<String> getMessages() {
@@ -23,6 +23,6 @@ public class HistoryParam {
     }
 
     public ArrayList<Integer> getReadState() {
-        return read_state;
+        return readState;
     }
 }

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import java.io.InputStream;
 
 public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-
     @SuppressLint("StaticFieldLeak")
     private ImageView bmImage;
 
@@ -20,10 +19,10 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected Bitmap doInBackground(String... urls) {
-        String urldisplay = urls[0];
+        String urlDisplay = urls[0];
         Bitmap mIcon11 = null;
         try {
-            InputStream in = new java.net.URL(urldisplay).openStream();
+            InputStream in = new java.net.URL(urlDisplay).openStream();
             mIcon11 = BitmapFactory.decodeStream(in);
         } catch (Exception e) {
             Log.e("Ошибка передачи изображения", e.getMessage());

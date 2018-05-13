@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
+import static com.example.admin.vkmess.R.layout.dialogs;
 
 public class Dialogs extends Activity {
-
-    public ArrayList<String> messages;
-    public ArrayList<String> users;
-    public ArrayList<Integer> read_state;
+    ArrayList<String> messages;
+    ArrayList<String> users;
+    ArrayList<Integer> readState;
+    ArrayList<String> usrImg;
     int id = 0;
 
     EditText text;
@@ -28,22 +29,23 @@ public class Dialogs extends Activity {
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        setContentView(R.layout.dialogs);
-
-        messages = getIntent().getStringArrayListExtra("messages");
-        users = getIntent().getStringArrayListExtra("out");
-        read_state = getIntent().getIntegerArrayListExtra("read_state");
-        Collections.reverse(messages);
-        Collections.reverse(users);
-        Collections.reverse(read_state);
+        setContentView(dialogs);
 
         id = getIntent().getIntExtra("id", 0);
+        usrImg = getIntent().getStringArrayListExtra("userImg");
+        messages = getIntent().getStringArrayListExtra("messages");
+        users = getIntent().getStringArrayListExtra("out");
+        readState = getIntent().getIntegerArrayListExtra("readState");
+        Collections.reverse(messages);
+        Collections.reverse(users);
+        Collections.reverse(readState);
 
         send = findViewById(R.id.sendMess);
         text = findViewById(R.id.takeMess);
         listView = findViewById(R.id.dialogsMes);
 
-        listView.setAdapter(new MessagesAdapter(this, messages, users, read_state));
+        listView.setAdapter(new MessagesAdapter(messages, users,
+                readState, this, usrImg));
         listView.setSelection(users.size() - 1);
 
         send.setOnClickListener(v -> {

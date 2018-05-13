@@ -6,24 +6,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.admin.vkmess.R;
+import com.example.admin.vkmess.VKLib.DownloadImage;
 
 import java.util.List;
 
 public class MessagesAdapter extends BaseAdapter {
     private List<String> messages;
     private List<String> users;
-    private List<Integer> read_state;
+    private List<Integer> readState;  //Пока не используется, но вижу в перспективе
     private Context context;
+    private List<String> usrImg;
 
-    public MessagesAdapter(Context context, List<String> messages,
-                           List<String> users, List<Integer> read_state) {
-        this.users = users;
+    public MessagesAdapter(List<String> messages, List<String> users, List<Integer> readState, Context context, List<String> usrImg) {
         this.messages = messages;
+        this.users = users;
+        this.readState = readState;
         this.context = context;
-        this.read_state = read_state;
+        this.usrImg = usrImg;
     }
 
     @Override
@@ -47,18 +50,20 @@ public class MessagesAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         assert inflater != null;
-        @SuppressLint({"ViewHolder", "InflateParams"}) View view = inflater.inflate(R.layout.user_mess, null);
+        @SuppressLint({"ViewHolder", "InflateParams"}) View view = inflater.inflate(R.layout.item_for_hist, null);
 
-        setData.user_name = view.findViewById(R.id.user1);
-        setData.user_name.setText(users.get(position));
+        setData.userName = view.findViewById(R.id.user);
+        setData.msg = view.findViewById(R.id.msg);
+        setData.img = view.findViewById(R.id.imageView2);
 
-        setData.msg = view.findViewById(R.id.user2);
+        setData.userName.setText(users.get(position));
         setData.msg.setText(messages.get(position));
-
+        new DownloadImage(setData.img).execute(usrImg.get(position));
         return view;
     }
 
     public class SetData {
-        TextView user_name, msg;
+        TextView userName, msg;
+        ImageView img;
     }
 }

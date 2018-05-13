@@ -7,11 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Friends implements Parser{
-
     private List<String> name = new ArrayList<>();
-
     private List<String> image = new ArrayList<>();
-
     private List<Integer> id = new ArrayList<>();
 
     public List<String> getName() {

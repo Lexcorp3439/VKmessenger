@@ -12,16 +12,12 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.example.admin.vkmess.ObjectParameters.LPElem;
-import com.example.admin.vkmess.Parser.LongPoll;
 import com.example.admin.vkmess.VKLib.VKLib;
 
 import static android.content.ContentValues.TAG;
 
 class AutenWeb extends WebViewClient {
-
     private Context context;
-
     private WebView webView;
 
     AutenWeb(Context context, WebView webView) {
@@ -46,12 +42,7 @@ class AutenWeb extends WebViewClient {
         Log.i(TAG, "shouldOverrideUrlLoading() URL : " + url);
 
         if (url.contains("access_token")) {
-//            String urlLog = "https://api.vk.com/method/messages.getLongPollServer?lp_version=3" +
-//                    "&need_pts=0&need_pts=1&v=5.74&access_token=" + url.substring(45, 130);
-
             Uri uri = Uri.parse(url.replace("#", "?"));
-
-            System.out.println();
 
             String ACCES_TOKEN = uri.getQueryParameter("access_token");
             String ID = uri.getQueryParameter("user_id");
@@ -59,13 +50,15 @@ class AutenWeb extends WebViewClient {
             VKLib vkLib = new VKLib();
             vkLib.setTOKEN(ACCES_TOKEN);
             vkLib.setID(ID);
+
             webView.setVisibility(View.INVISIBLE);
 
             Intent intent = new Intent(context, BodyMess.class);
             context.startActivity(intent);
-
         }
-
         return false;
     }
 }
+
+//            String urlLog = "https://api.vk.com/method/messages.getLongPollServer?lp_version=3" +
+//                    "&need_pts=0&need_pts=1&v=5.74&access_token=" + url.substring(45, 130);

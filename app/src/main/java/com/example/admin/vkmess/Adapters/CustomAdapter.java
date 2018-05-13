@@ -1,6 +1,7 @@
 package com.example.admin.vkmess.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,24 +16,29 @@ import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class CustomAdapter extends BaseAdapter {
     private List<String> messages;
     private List<String> users;
     private List<String> images;
-    private List<Integer> user_id;
+    private List<Integer> userId;
     private Context context;
+    private Activity activity;
 
-    private String LOG = "CustomAdapter: ";
+    private final String LOG = "CustomAdapter: ";
+    private boolean can = true;
 
-    public CustomAdapter(Context context, List<String> users, List<Integer> user_id,
-                         List<String> messages, List<String> images) {
+    public CustomAdapter(Context context, List<String> users, List<Integer> userId,
+                         List<String> messages, List<String> images, Activity activity) {
         this.context = context;
         this.messages = messages;
         this.users = users;
-        this.user_id = user_id;
+        this.userId = userId;
         this.images = images;
+        this.activity = activity;
     }
 
     @Override
@@ -59,26 +65,37 @@ public class CustomAdapter extends BaseAdapter {
         @SuppressLint({"ViewHolder", "InflateParams"})
         View view = inflater.inflate(R.layout.item, null);
 
-        setData.user_name = view.findViewById(R.id.user);
+        setData.userName = view.findViewById(R.id.user);
         setData.msg = view.findViewById(R.id.msg);
         setData.image = view.findViewById(R.id.imageView2);
 
-        setData.user_name.setText(users.get(position));
+        setData.userName.setText(users.get(position));
         setData.msg.setText(messages.get(position));
-
         new DownloadImage(setData.image).execute(images.get(position));
 
-        view.setOnClickListener(v -> {
-            final int id = user_id.get(position);
-            Log.e(LOG, "user_id= " + id);
-            VKLib.getDialogHist(id, context);
-        });
+//        Timer timer = new Timer();
+//        TimerTask tt = new TimerTask() {
+//            @Override
+//            public void run() {
+//                activity.runOnUiThread(() -> can = true);
+//            }
+//        };
+//        activity.runOnUiThread(() -> can = false);
+//        timer.schedule(tt,0,1000);
 
+        view.setOnClickListener(v -> {
+            if (can) {
+                int id = userId.get(position);
+                String image = images.get(position);
+                Log.e(LOG, "userId= " + id);
+                VKLib.getDialogHist(id, image, context);
+            }
+        });
         return view;
     }
 
     private class SetData {
-        TextView user_name, msg;
+        TextView userName, msg;
         ImageView image;
     }
 }

@@ -2,7 +2,6 @@ package com.example.admin.vkmess.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,9 @@ import com.example.admin.vkmess.R;
 import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FriendsAdapter extends BaseAdapter {
-
     private List<String> image;
     private List<String> users;
     private List<Integer> id;
@@ -58,23 +55,23 @@ public class FriendsAdapter extends BaseAdapter {
         @SuppressLint({"ViewHolder", "InflateParams"})
         View view = inflater.inflate(R.layout.friends_list, null);
 
-        setData.user_name = view.findViewById(R.id.users);
+        setData.userName = view.findViewById(R.id.users);
         setData.image = view.findViewById(R.id.image);
 
-        setData.user_name.setText(users.get(position));
-
+        setData.userName.setText(users.get(position));
         new DownloadImage(setData.image).execute(image.get(position));
 
         view.setOnClickListener(v -> {
-            final int user_id = id.get(position);
-            VKLib.getDialogHist(user_id, context);
+            int user_id = id.get(position);
+            String img = image.get(position);
+            VKLib.getDialogHist(user_id, img, context);
         });
         return view;
     }
 
 
     private class SetData {
-        TextView user_name;
+        TextView userName;
         ImageView image;
     }
 }
