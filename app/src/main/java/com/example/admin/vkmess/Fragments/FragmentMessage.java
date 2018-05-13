@@ -5,8 +5,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.util.JsonReader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +16,6 @@ import com.example.admin.vkmess.ObjectParameters.LPElem;
 import com.example.admin.vkmess.Parser.LongPoll;
 import com.example.admin.vkmess.Parser.LongPollRequest;
 import com.example.admin.vkmess.R;
-
-import java.io.IOException;
-import java.util.Objects;
 
 import static com.example.admin.vkmess.VKLib.VKLib.getDialogs;
 

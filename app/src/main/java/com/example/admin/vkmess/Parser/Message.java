@@ -8,11 +8,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Message {
+public class Message implements Parser{
+
     private List<Parameters> param = new ArrayList<>();
 
     public List<Parameters> getParam() {
         return param;
+    }
+
+    public Message() {
     }
 
     private boolean unread = false;
@@ -20,7 +24,8 @@ public class Message {
     private String title = "";
     private String body = "";
 
-    public Message(JsonReader json) throws IOException {
+    @Override
+    public void parse(JsonReader json) throws IOException {
         json.beginObject();
         json.nextName();
         json.beginObject();

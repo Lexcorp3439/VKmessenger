@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Name {
+public class Name implements Parser{
 
     private List<String> name = new ArrayList<>();
 
@@ -21,7 +21,8 @@ public class Name {
         return images;
     }
 
-    public Name(JsonReader json) throws IOException {
+    @Override
+    public void parse(JsonReader json) throws IOException {
         json.beginObject();
         json.nextName();
         json.beginArray();

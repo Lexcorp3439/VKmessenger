@@ -6,7 +6,7 @@ import com.example.admin.vkmess.ObjectParameters.LPElem;
 
 import java.io.IOException;
 
-public class LongPoll {
+public class LongPoll implements Parser{
 
     private LPElem elem;
 
@@ -14,7 +14,8 @@ public class LongPoll {
         return elem;
     }
 
-    public LongPoll(JsonReader json) throws IOException {
+    @Override
+    public void parse(JsonReader json) throws IOException {
 
         int ts = 0;
         int pts = 0;

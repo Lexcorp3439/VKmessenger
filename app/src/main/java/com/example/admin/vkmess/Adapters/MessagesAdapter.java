@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.admin.vkmess.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MessagesAdapter extends BaseAdapter {

@@ -4,7 +4,7 @@ import android.util.JsonReader;
 
 import java.io.IOException;
 
-public class LongPollRequest {
+public class LongPollRequest implements Parser{
 
     private int pts;
     private int count;
@@ -17,7 +17,8 @@ public class LongPollRequest {
         return count;
     }
 
-    public LongPollRequest(JsonReader json) throws IOException {
+    @Override
+    public void parse(JsonReader json) throws IOException {
         json.beginObject();
         json.nextName();
         json.beginObject();

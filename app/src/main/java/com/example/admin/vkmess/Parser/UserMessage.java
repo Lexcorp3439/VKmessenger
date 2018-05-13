@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class UserMessage {
+public class UserMessage implements Parser{
 
     private HistoryParam history;
 
@@ -16,7 +16,7 @@ public class UserMessage {
         return history;
     }
 
-    public UserMessage(JsonReader json) throws IOException {
+    public void parse(JsonReader json) throws IOException {
         json.beginObject();
         json.nextName();
         json.beginObject();

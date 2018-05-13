@@ -3,8 +3,6 @@ package com.example.admin.vkmess.VKLib;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.JsonReader;
-import android.util.Log;
 import android.widget.ListView;
 
 import com.example.admin.vkmess.Adapters.CustomAdapter;
@@ -15,9 +13,8 @@ import com.example.admin.vkmess.ObjectParameters.Parameters;
 import com.example.admin.vkmess.Parser.Friends;
 import com.example.admin.vkmess.Parser.Message;
 import com.example.admin.vkmess.Parser.Name;
+import com.example.admin.vkmess.Parser.SendMess;
 import com.example.admin.vkmess.Parser.UserMessage;
-
-import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +23,7 @@ import java.util.concurrent.ExecutionException;
 
 public class VKLib {
 
-    private static String LOG = "VKLin: ";
+//    private static String LOG = "VKLin: ";
 
     private static String TOKEN;
     private static String ID;
@@ -42,10 +39,13 @@ public class VKLib {
     public static void sendMess(int id, String msg) {
 
         try {
+
             String url = "https://api.vk.com/method/messages.send?user_id=" + id + "&message="
                     + msg + "&v=5.74&access_token=" + TOKEN;
+            SendMess sendMess = new SendMess();
+            RequestObject rb = new RequestObject(url, sendMess);
 
-            new VKrequest().execute(url).get();
+            new VKrequest().execute(rb).get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -53,16 +53,17 @@ public class VKLib {
 
     public static void getFriends(Context context, Activity activity, ListView listView) {
 
+        Friends friends = new Friends();
         String url = "https://api.vk.com/method/friends.get?user_id=" + ID + "&order=hints&fields=photo_50&v=5.74&access_token=" + TOKEN;
+        RequestObject rb = new RequestObject(url, friends);
 
         try {
-            JsonReader json = new VKrequest().execute(url).get();
+            new VKrequest().execute(rb).get();
 
-            Friends friends = new Friends(json);
             activity.runOnUiThread(() ->
                     listView.setAdapter(new FriendsAdapter(context, friends.getName(),
                             friends.getImage(), friends.getId())));
-        } catch (IOException | ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -71,21 +72,21 @@ public class VKLib {
 
         ArrayList<String> name = new ArrayList<>();
 
-        String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=30&v=5.74&access_token=" + TOKEN;
+        String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=200&v=5.74&access_token=" + TOKEN;
         String user_name = "https://api.vk.com/method/users.get?&v=5.74&access_token=" + TOKEN;
         String friend_name = "https://api.vk.com/method/users.get?user_ids=" + id + "&v=5.74&access_token=" + TOKEN;
+        UserMessage message = new UserMessage();
+        Name userName = new Name();
+        Name friendName = new Name();
 
         try {
-            JsonReader json = new VKrequest().execute(url).get();
+            new VKrequest().execute(new RequestObject(url, message)).get();
+            new VKrequest().execute(new RequestObject(user_name, userName)).get();
+            new VKrequest().execute(new RequestObject(friend_name, friendName)).get();
 
-            JsonReader userJson = new VKrequest().execute(user_name).get();
-            JsonReader friendJson = new VKrequest().execute(friend_name).get();
-
-
-            HistoryParam history = new UserMessage(json).getHistory();
-
-            user_name = new Name(userJson).getName().get(0);
-            friend_name = new Name(friendJson).getName().get(0);
+            HistoryParam history = message.getHistory();
+            user_name = userName.getName().get(0);
+            friend_name = friendName.getName().get(0);
 
             for (int i : history.getOut()) {
                 if (i == 1)
@@ -100,7 +101,7 @@ public class VKLib {
                             .putExtra("out", name)
                             .putExtra("read_state", history.getReadState()));
 
-        } catch (IOException | ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -113,16 +114,15 @@ public class VKLib {
         List<String> users = new ArrayList<>();
         List<String> images = new ArrayList<>();
         List<Integer> users_id = new ArrayList<>();
+
+        Message message = new Message();
         String request = "https://api.vk.com/method/messages.getDialogs?count=" + count + "&v=5.74&access_token=" + TOKEN;
+        RequestObject rb = new RequestObject(request, message);
 
         try {
-            JsonReader json = new VKrequest().execute(request).get();
+            new VKrequest().execute(rb).get();
 
-            if (json == null)
-                Log.e(LOG, "json == null");
-
-            assert json != null;
-            param = new Message(json).getParam();
+            param = message.getParam();
 
             StringBuilder allID = new StringBuilder();
 
@@ -143,9 +143,10 @@ public class VKLib {
 
             String nameReq = "https://api.vk.com/method/users.get?user_ids=" +
                     allID.toString().substring(0, allID.length() - 2) + "&fields=photo_50&v=5.74&access_token=" + TOKEN;
-            json = new VKrequest().execute(nameReq).get();
+            Name name = new Name();
 
-            Name name = new Name(json);
+            new VKrequest().execute(new RequestObject(nameReq, name)).get();
+
             List<String> users_All = name.getName();
             List<String> image_All = name.getImages();
             String defaultImg = image_All.get(image_All.size() - 1);
@@ -169,10 +170,33 @@ public class VKLib {
                             users, users_id, messages, images
                     )));
 
-        } catch (IOException | ExecutionException | InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
 
     }
 }
 
+//            new VKrequest(() ->
+//                    new VKrequest(()->
+//                    new VKrequest(()->{
+//                    HistoryParam history = message.getHistory();
+//                    String userN = userName.getName().get(0);
+//                    String friendN = friendName.getName().get(0);
+//
+//                    for (int i : history.getOut()) {
+//                    if (i == 1)
+//                    name.add(userN);
+//                    else
+//                    name.add(friendN);
+//                    }
+//
+//                    context.startActivity(
+//                    new Intent(context, Dialogs.class).putExtra("id", id)
+//        .putExtra("messages", history.getMessages())
+//        .putExtra("out", name)
+//        .putExtra("read_state", history.getReadState()));
+//        }
+//        ).execute(new RequestObject(friend_name, friendName)).get())
+//        .execute(new RequestObject(user_name, userName)).get())
+//        .execute(new RequestObject(url, message)).get();

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Friends {
+public class Friends implements Parser{
 
     private List<String> name = new ArrayList<>();
 
@@ -26,7 +26,8 @@ public class Friends {
         return id;
     }
 
-    public Friends(JsonReader json) throws IOException {
+    @Override
+    public void parse(JsonReader json) throws IOException {
         json.beginObject();
         json.nextName();
         json.beginObject();
