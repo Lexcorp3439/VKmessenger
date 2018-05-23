@@ -184,7 +184,10 @@ public class VKLib {
                     images.add(allImages.get(i));
                     i++;
                 } else {
-                    users.add(elem.getTitle());
+                    if (elem.getTitle().length() > 25)
+                        users.add(elem.getTitle().substring(0, 22) + "...");
+                    else
+                        users.add(elem.getTitle());
                     images.add(defaultImg);
                 }
             }

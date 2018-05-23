@@ -58,7 +58,7 @@ public class MessagesAdapter extends BaseAdapter {
 
         setData.userName.setText(users.get(position));
         setData.msg.setText(messages.get(position));
-        new DownloadImage(setData.img).execute(usrImg.get(position));
+        new DownloadImage(setData.img, context).execute(usrImg.get(position));
         return view;
     }
 

@@ -51,7 +51,7 @@ public class BodyMess extends AppCompatActivity
         ImageView headerImg = headerLayout.findViewById(R.id.imageView);
         headerText.setText(VKLib.getNameUsr());
         status.setText(VKLib.getStatus());
-        new DownloadImage(headerImg).execute(VKLib.getImage200());
+        new DownloadImage(headerImg, getApplicationContext()).execute(VKLib.getImage200());
 
         fMessage = new FragmentMessage();
         fProfile = new FragmentProfile();

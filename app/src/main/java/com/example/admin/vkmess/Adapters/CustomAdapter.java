@@ -73,7 +73,7 @@ public class CustomAdapter extends BaseAdapter {
 
         setData.userName.setText(users.get(position));
         setData.msg.setText(messages.get(position));
-        new DownloadImage(setData.image).execute(images.get(position));
+        new DownloadImage(setData.image, context).execute(images.get(position));
 
         Timer timer = new Timer();
         TimerTask tt = new TimerTask() {

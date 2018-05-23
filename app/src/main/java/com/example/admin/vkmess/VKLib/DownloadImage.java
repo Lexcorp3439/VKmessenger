@@ -1,9 +1,12 @@
 package com.example.admin.vkmess.VKLib;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -12,9 +15,12 @@ import java.io.InputStream;
 public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     @SuppressLint("StaticFieldLeak")
     private ImageView bmImage;
+    @SuppressLint("StaticFieldLeak")
+    private Context context;
 
-    public DownloadImage(ImageView bmImage) {
+    public DownloadImage(ImageView bmImage, Context context) {
         this.bmImage = bmImage;
+        this.context = context;
     }
 
     @Override
@@ -33,6 +39,10 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap result) {
-        bmImage.setImageBitmap(result);
+
+        RoundedBitmapDrawable rb = RoundedBitmapDrawableFactory.create( context.getResources(),result);
+        rb.setCircular(true);
+        //bmImage.setImageBitmap(result);
+        bmImage.setImageDrawable(rb);
     }
 }
