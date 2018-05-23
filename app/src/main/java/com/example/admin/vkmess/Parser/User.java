@@ -3,20 +3,28 @@ package com.example.admin.vkmess.Parser;
 import android.util.JsonReader;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class Name implements Parser{
-    private List<String> name = new ArrayList<>();
-    private List<String> images = new ArrayList<>();
+public class User implements Parser{
+    private String name;
+    private String image50;
+    private String image200;
+    private String status;
 
-    public List<String> getName() {
+    public String getStatus() {
+        return status;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public List<String> getImages() {
-        return images;
+    public String getImage50() {
+        return image50;
+    }
+
+    public String getImage200() {
+        return image200;
     }
 
     @Override
@@ -38,18 +46,23 @@ public class Name implements Parser{
                         nameObj.append(json.nextString());
                         break;
                     case "photo_50":
-                        images.add(json.nextString());
+                        image50 = json.nextString();
+                        break;
+                    case "photo_200":
+                        image200 = json.nextString();
+                        break;
+                    case "status":
+                        status = json.nextString();
                         break;
                     default:
                         json.skipValue();
                         break;
                 }
             }
-            name.add(nameObj.toString());
+            name = nameObj.toString();
             json.endObject();
         }
         json.endArray();
         json.endObject();
-        images.add("https://vk.com/images/camera_50.png");
     }
 }

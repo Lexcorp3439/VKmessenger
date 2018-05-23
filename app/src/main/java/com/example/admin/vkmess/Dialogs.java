@@ -16,10 +16,10 @@ import java.util.Objects;
 import static com.example.admin.vkmess.R.layout.dialogs;
 
 public class Dialogs extends Activity {
-    ArrayList<String> messages;
-    ArrayList<String> users;
-    ArrayList<Integer> readState;
-    ArrayList<String> usrImg;
+//    ArrayList<String> messages;
+//    ArrayList<String> users;
+//    ArrayList<Integer> readState;
+//    ArrayList<String> usrImg;
     int id = 0;
 
     EditText text;
@@ -32,21 +32,14 @@ public class Dialogs extends Activity {
         setContentView(dialogs);
 
         id = getIntent().getIntExtra("id", 0);
-        usrImg = getIntent().getStringArrayListExtra("userImg");
-        messages = getIntent().getStringArrayListExtra("messages");
-        users = getIntent().getStringArrayListExtra("out");
-        readState = getIntent().getIntegerArrayListExtra("readState");
-        Collections.reverse(messages);
-        Collections.reverse(users);
-        Collections.reverse(readState);
+        String name = getIntent().getStringExtra("userName");
+        String image = getIntent().getStringExtra("userImg");
 
         send = findViewById(R.id.sendMess);
         text = findViewById(R.id.takeMess);
         listView = findViewById(R.id.dialogsMes);
 
-        listView.setAdapter(new MessagesAdapter(messages, users,
-                readState, this, usrImg));
-        listView.setSelection(users.size() - 1);
+        VKLib.getDialogHist(id, name, image, getApplicationContext(), listView);
 
         send.setOnClickListener(v -> {
             if (!Objects.equals(String.valueOf(text.getText()), "")) {

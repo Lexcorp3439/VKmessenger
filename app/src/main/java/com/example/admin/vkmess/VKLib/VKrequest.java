@@ -13,6 +13,16 @@ import java.net.URL;
 
 class VKrequest extends AsyncTask<RequestObject, Void, Void> {
 
+    Runnable run;
+
+    public VKrequest(Runnable run) {
+        this.run = run;
+    }
+
+    public VKrequest() {
+        run = ()->{};
+    }
+
     @Override
     protected Void doInBackground(RequestObject... request) {
         HttpURLConnection connection = null;
@@ -51,5 +61,6 @@ class VKrequest extends AsyncTask<RequestObject, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
+        run.run();
     }
 }

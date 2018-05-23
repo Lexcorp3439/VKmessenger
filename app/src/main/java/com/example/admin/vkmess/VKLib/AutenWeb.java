@@ -1,4 +1,4 @@
-package com.example.admin.vkmess;
+package com.example.admin.vkmess.VKLib;
 
 
 import android.annotation.TargetApi;
@@ -12,15 +12,19 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.example.admin.vkmess.VKLib.VKLib;
+import com.example.admin.vkmess.BodyMess;
+import com.example.admin.vkmess.Parser.Name;
+import com.example.admin.vkmess.Parser.User;
+
+import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
 
-class AutenWeb extends WebViewClient {
+public class AutenWeb extends WebViewClient {
     private Context context;
     private WebView webView;
 
-    AutenWeb(Context context, WebView webView) {
+    public AutenWeb(Context context, WebView webView) {
         this.context = context;
         this.webView = webView;
     }
@@ -47,9 +51,21 @@ class AutenWeb extends WebViewClient {
             String ACCES_TOKEN = uri.getQueryParameter("access_token");
             String ID = uri.getQueryParameter("user_id");
 
-            VKLib vkLib = new VKLib();
-            vkLib.setTOKEN(ACCES_TOKEN);
-            vkLib.setID(ID);
+            String usersGet = "https://api.vk.com/method/users.get?fields=photo_50,photo_200,status&v=5.74&access_token=" + ACCES_TOKEN;
+            User user = new User();
+            try {
+                new VKrequest().execute(new RequestObject(usersGet, user)).get();
+                VKLib.setTOKEN(ACCES_TOKEN);
+                VKLib.setID(ID);
+                VKLib.setNameUsr(user.getName());
+                VKLib.setImage(user.getImage50());
+                VKLib.setImage200(user.getImage200());
+                VKLib.setStatus(user.getStatus());
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
+
+
 
             webView.setVisibility(View.INVISIBLE);
 

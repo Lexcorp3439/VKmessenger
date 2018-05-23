@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.example.admin.vkmess.Adapters.CustomAdapter;
 import com.example.admin.vkmess.Adapters.FriendsAdapter;
+import com.example.admin.vkmess.Adapters.MessagesAdapter;
 import com.example.admin.vkmess.Dialogs;
 import com.example.admin.vkmess.ObjectParameters.HistoryParam;
 import com.example.admin.vkmess.ObjectParameters.Parameters;
@@ -17,6 +18,7 @@ import com.example.admin.vkmess.Parser.SendMess;
 import com.example.admin.vkmess.Parser.UserMessage;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -25,14 +27,53 @@ public class VKLib {
 //    private static String LOG = "VKLin: ";
     private static String TOKEN;
     private static String ID;
+    private static String nameUsr;
+    private static String imageUsr;
+    private static String imageUsr200;
+    private static String status;
 
-    public void setTOKEN(String TOKEN) {
+
+    public static String getStatus() {
+        return status;
+    }
+
+    public static String getNameUsr() {
+        return nameUsr;
+    }
+
+    public static String getImageUsr() {
+        return imageUsr;
+    }
+
+    public static String getImage200() {
+        return imageUsr200;
+    }
+
+    public static void setStatus(String status) {
+        VKLib.status = status;
+    }
+
+    public static void setImage200(String imageUsr200) {
+        VKLib.imageUsr200 = imageUsr200;
+    }
+
+    public static void setTOKEN(String TOKEN) {
         VKLib.TOKEN = TOKEN;
     }
 
-    public void setID(String ID) {
+    public static void setID(String ID) {
         VKLib.ID = ID;
     }
+
+    public static void setNameUsr(String nameUsr) {
+        VKLib.nameUsr = nameUsr;
+    }
+
+    public static void setImage(String imageUsr) {
+        VKLib.imageUsr = imageUsr;
+    }
+
+
 
     public static void sendMess(int id, String msg) {
         try {
@@ -53,51 +94,46 @@ public class VKLib {
             new VKrequest().execute(new RequestObject(url, friends)).get();
 
             activity.runOnUiThread(() ->
-                    listView.setAdapter(new FriendsAdapter(context, friends.getName(),
-                            friends.getImage(), friends.getId())));
+                    listView.setAdapter(new FriendsAdapter(friends.getImage(),
+                            friends.getName(), friends.getId(), context, activity)));
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    public static void getDialogHist(int id, String image, Context context) {
+    public static void getDialogHist(int id, String frName, String image, Context context, ListView listView) {
         ArrayList<String> name = new ArrayList<>();
         ArrayList<String> images = new ArrayList<>();
 
         String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=200&v=5.74&access_token=" + TOKEN;
-        String usersGet = "https://api.vk.com/method/users.get?fields=photo_50&v=5.74&access_token=" + TOKEN;
-        String friendsGet = "https://api.vk.com/method/users.get?user_ids=" + id + "&v=5.74&access_token=" + TOKEN;
 
         UserMessage message = new UserMessage();
-        Name userName = new Name();
-        Name friendName = new Name();
 
         try {
             new VKrequest().execute(new RequestObject(url, message)).get();
-            new VKrequest().execute(new RequestObject(usersGet, userName)).get();
-            new VKrequest().execute(new RequestObject(friendsGet, friendName)).get();
 
             HistoryParam history = message.getHistory();
-            usersGet = userName.getName().get(0);
-            friendsGet = friendName.getName().get(0);
-            String userImg = userName.getImages().get(0);
 
             for (int out : history.getOut()) {
                 if (out == 1) {
-                    name.add(usersGet);
-                    images.add(userImg);
+                    name.add(nameUsr);
+                    images.add(imageUsr);
                 }else {
-                    name.add(friendsGet);
+                    name.add(frName);
                     images.add(image);
                 }
             }
+            ArrayList<String> messages = history.getMessages();
+            ArrayList<Integer> readState = history.getReadState();
 
-            context.startActivity(
-                    new Intent(context, Dialogs.class).putExtra("id", id)
-                            .putExtra("messages", history.getMessages())
-                            .putExtra("out", name)
-                            .putExtra("readState", history.getReadState())
-                            .putExtra("userImg", images));
+            Collections.reverse(messages);
+            Collections.reverse(name);
+            Collections.reverse(readState);
+            Collections.reverse(images);
+
+            listView.setAdapter(new MessagesAdapter(messages, name,
+                    readState, context, images));
+            listView.setSelection(name.size() - 1);
 
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
@@ -133,7 +169,7 @@ public class VKLib {
             }
 
             String nameReq = "https://api.vk.com/method/users.get?user_ids=" +
-                    allID.toString().substring(0, allID.length() - 2) + "&fields=photo_50&v=5.74&access_token=" + TOKEN;
+                    allID.toString().substring(0, allID.length() - 1) + "&fields=photo_50&v=5.74&access_token=" + TOKEN;
             Name name = new Name();
             new VKrequest().execute(new RequestObject(nameReq, name)).get();
 

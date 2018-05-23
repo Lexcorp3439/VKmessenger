@@ -3,6 +3,7 @@ package com.example.admin.vkmess.Adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.admin.vkmess.Dialogs;
 import com.example.admin.vkmess.R;
 import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
@@ -73,22 +75,24 @@ public class CustomAdapter extends BaseAdapter {
         setData.msg.setText(messages.get(position));
         new DownloadImage(setData.image).execute(images.get(position));
 
-//        Timer timer = new Timer();
-//        TimerTask tt = new TimerTask() {
-//            @Override
-//            public void run() {
-//                activity.runOnUiThread(() -> can = true);
-//            }
-//        };
-//        activity.runOnUiThread(() -> can = false);
-//        timer.schedule(tt,0,1000);
+        Timer timer = new Timer();
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                activity.runOnUiThread(() -> can = true);
+            }
+        };
+        timer.schedule(tt,0,1000);
 
         view.setOnClickListener(v -> {
             if (can) {
+                activity.runOnUiThread(() -> can = false);
                 int id = userId.get(position);
-                String image = images.get(position);
                 Log.e(LOG, "userId= " + id);
-                VKLib.getDialogHist(id, image, context);
+                context.startActivity(
+                        new Intent(context, Dialogs.class).putExtra("id", id)
+                                .putExtra("userName", users.get(position))
+                                .putExtra("userImg", images.get(position)));
             }
         });
         return view;
