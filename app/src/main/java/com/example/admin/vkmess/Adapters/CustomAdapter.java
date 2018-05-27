@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.example.admin.vkmess.VKLib.VKLib.getID;
+
 
 public class CustomAdapter extends BaseAdapter {
     private List<String> messages;
@@ -73,7 +75,7 @@ public class CustomAdapter extends BaseAdapter {
 
         setData.userName.setText(users.get(position));
         setData.msg.setText(messages.get(position));
-        new DownloadImage(setData.image, context).execute(images.get(position));
+        new DownloadImage(setData.image, context, userId.get(position)).execute(images.get(position));
 
         Timer timer = new Timer();
         TimerTask tt = new TimerTask() {

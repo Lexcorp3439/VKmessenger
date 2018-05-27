@@ -26,12 +26,15 @@ import java.util.concurrent.ExecutionException;
 public class VKLib {
 //    private static String LOG = "VKLin: ";
     private static String TOKEN;
-    private static String ID;
+    private static Integer ID;
     private static String nameUsr;
     private static String imageUsr;
     private static String imageUsr200;
     private static String status;
 
+    public static Integer getID() {
+        return ID;
+    }
 
     public static String getStatus() {
         return status;
@@ -61,7 +64,7 @@ public class VKLib {
         VKLib.TOKEN = TOKEN;
     }
 
-    public static void setID(String ID) {
+    public static void setID(Integer ID) {
         VKLib.ID = ID;
     }
 
@@ -102,38 +105,27 @@ public class VKLib {
     }
 
     public static void getDialogHist(int id, String frName, String image, Context context, ListView listView) {
-        ArrayList<String> name = new ArrayList<>();
-        ArrayList<String> images = new ArrayList<>();
+    String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=200&v=5.74&access_token=" + TOKEN;
 
-        String url = "https://api.vk.com/method/messages.getHistory?offset=0&user_id=" + id + "&count=200&v=5.74&access_token=" + TOKEN;
-
-        UserMessage message = new UserMessage();
+    UserMessage message = new UserMessage();
 
         try {
-            new VKrequest().execute(new RequestObject(url, message)).get();
+                new VKrequest().execute(new RequestObject(url, message)).get();
 
-            HistoryParam history = message.getHistory();
+                HistoryParam history = message.getHistory();
+                ArrayList<Integer> out = history.getOut();
 
-            for (int out : history.getOut()) {
-                if (out == 1) {
-                    name.add(nameUsr);
-                    images.add(imageUsr);
-                }else {
-                    name.add(frName);
-                    images.add(image);
-                }
-            }
-            ArrayList<String> messages = history.getMessages();
-            ArrayList<Integer> readState = history.getReadState();
+        ArrayList<String> messages = history.getMessages();
+        ArrayList<Integer> readState = history.getReadState();
 
-            Collections.reverse(messages);
-            Collections.reverse(name);
-            Collections.reverse(readState);
-            Collections.reverse(images);
+        Collections.reverse(messages);
+        Collections.reverse(out);
+        Collections.reverse(readState);
 
-            listView.setAdapter(new MessagesAdapter(messages, name,
-                    readState, context, images));
-            listView.setSelection(name.size() - 1);
+
+        listView.setAdapter(new MessagesAdapter(messages, frName,
+        readState, context, image, id, out));
+        listView.setSelection(out.size() - 1);
 
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();

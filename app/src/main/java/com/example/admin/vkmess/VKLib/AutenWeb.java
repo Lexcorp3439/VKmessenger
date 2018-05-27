@@ -50,7 +50,7 @@ public class AutenWeb extends WebViewClient {
             Uri uri = Uri.parse(url.replace("#", "?"));
 
             String ACCES_TOKEN = uri.getQueryParameter("access_token");
-            String ID = uri.getQueryParameter("user_id");
+            Integer ID = Integer.valueOf(uri.getQueryParameter("user_id"));
 
             String usersGet = "https://api.vk.com/method/users.get?fields=photo_50,photo_200,status&v=5.74&access_token=" + ACCES_TOKEN;
             User user = new User();

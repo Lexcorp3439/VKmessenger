@@ -14,24 +14,33 @@ import com.example.admin.vkmess.VKLib.DownloadImage;
 
 import java.util.List;
 
+import static com.example.admin.vkmess.VKLib.VKLib.getID;
+import static com.example.admin.vkmess.VKLib.VKLib.getImageUsr;
+import static com.example.admin.vkmess.VKLib.VKLib.getNameUsr;
+
 public class MessagesAdapter extends BaseAdapter {
     private List<String> messages;
-    private List<String> users;
+    private String frName;
     private List<Integer> readState;  //Пока не используется, но вижу в перспективе
     private Context context;
-    private List<String> usrImg;
+    private String frImage;
+    private Integer frId;
+    private List<Integer> out;
 
-    public MessagesAdapter(List<String> messages, List<String> users, List<Integer> readState, Context context, List<String> usrImg) {
+    public MessagesAdapter(List<String> messages, String frName, List<Integer> readState,
+                           Context context, String frImage, Integer frId, List<Integer> out) {
         this.messages = messages;
-        this.users = users;
+        this.frName = frName;
         this.readState = readState;
         this.context = context;
-        this.usrImg = usrImg;
+        this.frImage = frImage;
+        this.frId = frId;
+        this.out = out;
     }
 
     @Override
     public int getCount() {
-        return users.size();
+        return out.size();
     }
 
     @Override
@@ -55,10 +64,15 @@ public class MessagesAdapter extends BaseAdapter {
         setData.userName = view.findViewById(R.id.user);
         setData.msg = view.findViewById(R.id.msg);
         setData.img = view.findViewById(R.id.imageView2);
-
-        setData.userName.setText(users.get(position));
         setData.msg.setText(messages.get(position));
-        new DownloadImage(setData.img, context).execute(usrImg.get(position));
+
+        if (out.get(position) == 1) {
+            setData.userName.setText(frName);
+            new DownloadImage(setData.img, context, frId).execute(frImage);
+        } else {
+            setData.userName.setText(getNameUsr());
+            new DownloadImage(setData.img, context, getID()).execute(getImageUsr());
+        }
         return view;
     }
 

@@ -20,6 +20,9 @@ import com.example.admin.vkmess.Fragments.FragmentFriends;
 import com.example.admin.vkmess.VKLib.DownloadImage;
 import com.example.admin.vkmess.VKLib.VKLib;
 
+import static com.example.admin.vkmess.VKLib.Cache.setCache;
+import static com.example.admin.vkmess.VKLib.VKLib.getID;
+
 
 public class BodyMess extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,15 +54,14 @@ public class BodyMess extends AppCompatActivity
         ImageView headerImg = headerLayout.findViewById(R.id.imageView);
         headerText.setText(VKLib.getNameUsr());
         status.setText(VKLib.getStatus());
-        new DownloadImage(headerImg, getApplicationContext()).execute(VKLib.getImage200());
 
         fMessage = new FragmentMessage();
         fProfile = new FragmentProfile();
         fFriends = new FragmentFriends();
 
+        setCache();
+        new DownloadImage(headerImg, getApplicationContext(), getID()).execute(VKLib.getImage200());
     }
-
-
 
 
     @Override

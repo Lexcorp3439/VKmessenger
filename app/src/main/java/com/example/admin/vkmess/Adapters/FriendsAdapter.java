@@ -66,7 +66,7 @@ public class FriendsAdapter extends BaseAdapter {
         setData.image = view.findViewById(R.id.image);
 
         setData.userName.setText(users.get(position));
-        new DownloadImage(setData.image, context).execute(image.get(position));
+        new DownloadImage(setData.image, context, id.get(position)).execute(image.get(position));
 
         Timer timer = new Timer();
         TimerTask tt = new TimerTask() {
